@@ -30,14 +30,6 @@ body{
     left: -80px;
     top: -80px;
 }
-.shape:nth-child(3){
-    background: linear-gradient(
-        #5070e3,
-        #d3a464
-    );
-    left: 19rem;
-    top: -1em;
-}
 .shape:nth-child(2){
     background: linear-gradient(
         to right,
@@ -47,16 +39,24 @@ body{
     right: -30px;
     bottom: -80px;
 }
+.shape:nth-child(3){
+    background: linear-gradient(
+        #5070e3,
+        #d3a464
+    );
+    left: 19rem;
+    top: -1em;
+}
+
 div {
     display: inline-block;
 }
 div label {
     display: block;
 }
-
 form{
-    height: 30rem;
-    width: 400px;
+    height: 38rem;
+    width: 35rem;
     background-color: rgba(81, 36, 205, 0.13);
     position: absolute;
     transform: translate(-50%,-50%);
@@ -81,57 +81,75 @@ form h3{
     line-height: 42px;
     text-align: center;
 }
-
+/* labels */
 label{
-    display: block;
+    display: inline-block;
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
 }
 
 #label-already{
-    display: block;
-    margin-left: 9.8rem;
-    margin-top: 0.5em;
     font-size: 12px;
     font-weight: 500;
+    margin-left: 2.5rem;
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
 }
 
-input{
+#label-again{
+    padding-left: 3em !important;
+}
+
+/* Input Areas */
+#username, #password, #name{
     display: block;
     height: 50px;
-    width: 100%;
+    width: 110%;
     background-color: rgba(255,255,255,0.07);
     border-radius: 3px;
-    padding: 0 10px;
+    padding: 0 1rem ;
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
 }
+
+#password-again, #surname, #phone{
+    display: inline-block;
+    height: 50px;
+    width: 95%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 1rem ;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    margin-left: 3rem;
+}
+
 ::placeholder{
     color: #e5e5e5;
 }
-
-#login-btn{
+/* Butttons */
+.login-btn{
+    margin-left: 2.5em;
+    width: 95%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 0.8em 4.5rem;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.register-btn{
     margin-top: 2em;
     width: 110%;
     background-color: #ffffff;
     color: #080710;
-    padding: 0.8em 2em;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-
-}
-#register-btn{
-    margin-top: 2em;
-    margin-left: 3em;
-    width: 130%;
-    background-color: #ffffff;
-    color: #080710;
-    padding: 0.8em 3.2rem;
-    font-size: 15px;
+    padding: 0.8em 4rem;
+    font-size: 18px;
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
