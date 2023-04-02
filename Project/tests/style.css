@@ -1,0 +1,207 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito+Sans:400,800");
+
+body {
+  font-family: "Nunito Sans", sans-serif;
+  background: #f9f9f9;
+}
+
+.Cart {
+  max-width: 800px;
+  display: block;
+  margin: auto;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 800;
+}
+
+.Cart ul {
+  list-style-type: none;
+}
+
+.Cart li {
+  max-width: 400px;
+  padding-top: 10px;
+  margin-bottom: 30px;
+}
+
+.Cart li, .Cart button {
+  margin-right: 10px;
+}
+
+.Cart button {
+  cursor: pointer;
+  float: right;
+  border: none;
+  border-radius: 4px;
+  background: #D8D8D8;
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  transform: translatey(-5px);
+}
+
+.cartTotal {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  color: #0e5c2c;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  background: #a2bb98;
+  border: 10px solid #0e5c2c;
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+  border-radius: 6px 0 0 0;
+  padding: 10px 20px;
+}
+
+.cartColor {
+  min-width: 90px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+}
+
+.cartColorQty,
+.cartColorImport {
+  width: 80px;
+  float: right;
+}
+
+.wall {
+  /* columns:4;
+  column-gap: 1em; */
+  max-width: 800px;
+  display: block;
+  margin: auto;
+  padding-top: 60px;
+}
+
+.brick {
+  margin: 20px;
+  height: 180px;
+  width: 150px;
+  margin-bottom: 1em;
+  clear: both;
+  background: #fff;
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.brick:hover {
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+.color {
+  grid-area: color;
+  position: relative;
+  height: 120px !important;
+}
+
+.content {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 10px auto 10px;
+  grid-template-areas:
+    ". color ."
+    ". action .";
+}
+
+.action {
+  /* border: 1px solid red; */
+  grid-area: action;
+
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.action p {
+  /* padding: 0; */
+  font-weight: 800;
+  margin: auto;
+}
+
+.buyButton {
+  cursor: pointer;
+
+  font-weight: 800;
+  color: #fff;
+
+  width: 68px;
+  height: 25px;
+  background: linear-gradient(270deg, #ff3d00 -13.97%, #ffa800 105.15%);
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border: none;
+
+  position: relative;
+  top: 50%;
+  left: 15%;
+  transform: translateY(-50%);
+  transition: box-shadow 0.2s;
+}
+
+.color h1 {
+  position: absolute;
+  z-index: 2;
+
+  font-size: 46px;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -100%);
+}
+
+.palette {
+  /* border: 1px solid red; */
+  position: absolute;
+  height: 140px;
+  width: 140px;
+  left: 5px;
+  top: -10px;
+
+  background: #fdff8d;
+  box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+button:focus {
+  outline: 0;
+}
+
+button:active {
+  box-shadow: none;
+}
+
+.navBar {
+  position: fixed;
+
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 800;
+  text-align: right;
+  right: 0;
+  top: 0;
+  background: #fff;
+  z-index: 999;
+
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 0 6px;
+}
+
+.navBar li {
+  position: relative;
+  display: inline-block;
+  padding-right: 50px;
+  cursor: pointer;
+}
+
+.navBar li:hover {
+  font-style: italic;
+}
+
+.cartQuantity {
+  padding: 0px 5px;
+  border-radius: 6px;
+  color: #000;
+  background: linear-gradient(270deg, #ff3d00 -13.97%, #ffa800 105.15%);
+}
