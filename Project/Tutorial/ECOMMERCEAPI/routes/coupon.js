@@ -10,6 +10,8 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
         couponInfo: req.body.couponInfo,
         couponPoint: req.body.couponPoint,
         couponCode: req.body.couponCode,
+        couponType: req.body.couponType,
+        couponCode: req.body.couponAmount,
     });
 
     try {
@@ -35,6 +37,18 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 router.get("/find/:id", verifyToken, async (req, res) => {
     try {
         const findCoupon = await Coupon.findById(req.params.id)
+
+        
+        return res.status(200).json(findCoupon);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+// GET Coupon By Copuon Name
+router.get("/findbycode/:couponCode", verifyToken, async (req, res) => {
+    try {
+        const findCoupon = await Coupon.findOne({ couponCode: req.params.couponCode });
 
         
         return res.status(200).json(findCoupon);

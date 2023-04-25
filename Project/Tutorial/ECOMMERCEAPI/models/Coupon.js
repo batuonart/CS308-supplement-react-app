@@ -10,6 +10,8 @@ const CouponSchema = new mongoose.Schema({
     couponInfo:{type: String},
     couponPoint:{type: Number},
     couponCode:{type: String,required: true, unique: true},
+    couponType:{type: String},
+    couponAmount:{type: Number},
 },
     { timestamps: true } //Auto create timestams
 );
