@@ -24,7 +24,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 //DELETE COMMENT
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
     try {
         await Comment.findByIdAndDelete(req.params.id)
         return res.status(200).json("Comment has been deleted successfully");
@@ -33,19 +33,17 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 })
 // FIND COMMENTS
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:id", verifyToken, async (req, res) => {
     try {
-        const Comment = await Comment.findOne({ userId: req.params.userId });
-        // Send everything but password. 
-        // Send user the access token
-        return res.status(200).json(Comment);
+        const findComment = await Comment.findById(req.params.id);
+        return res.status(200).json(findComment);
     } catch (err) {
         return res.status(500).json(err);
     }
 })
 
-// UPDATE Comment // Will be used for Accepting Comments
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+// UPDATE Comment // Will be used for Modifying Comments
+router.put("/:id", verifyToken, async (req, res) => {
     try {
         const updatedComment = await Comment.findByIdAndUpdate(req.params.id, {
             $set: req.body

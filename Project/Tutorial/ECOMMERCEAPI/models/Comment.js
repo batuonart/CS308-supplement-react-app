@@ -18,7 +18,6 @@ const CommentSchema = new mongoose.Schema(
         type: Boolean,
         default: false
     }
-
 },
     { timestamps: true } //Auto create timestams
 );

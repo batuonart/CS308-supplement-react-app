@@ -3,6 +3,7 @@ const Adress = require("../models/Adress");
 
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
+// ADD ADRESS
 router.post("/", verifyToken, async (req, res) => {
     const newAdress = new Adress({
         userId: req.body.userId,
@@ -21,7 +22,8 @@ router.post("/", verifyToken, async (req, res) => {
 
 });
 
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+// DELETE ADRESS
+router.delete("/:id", verifyToken, async (req, res) => {
     try {
         await Adress.findByIdAndDelete(req.params.id)
         return res.status(200).json("Adress has been deleted successfully");
@@ -30,20 +32,20 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 })
 
-//
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+// GET ADRESS
+router.get("/find/:id", verifyToken, async (req, res) => {
     try {
-        const Adress = await Adress.findOne({ userId: req.params.userId });
-        // Send everything but password. 
-        // Send user the access token
-        return res.status(200).json(Adress);
+        const findAdress = await Adress.findById(req.params.id)
+
+        
+        return res.status(200).json(findAdress);
     } catch (err) {
         return res.status(500).json(err);
     }
 })
 
 // UPDATE Adress
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
     try {
         const updatedAdress = await Adress.findByIdAndUpdate(req.params.id, {
             $set: req.body
