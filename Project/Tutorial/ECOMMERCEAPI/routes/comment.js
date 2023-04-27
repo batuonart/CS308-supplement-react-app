@@ -67,4 +67,16 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+// GET ALL Comment By ProductId
+router.get("/findbyproduct/:productId", verifyToken, async (req, res) => {
+    try {
+        const findComment = await Comment.find({ productId: req.params.productId });
+
+        
+        return res.status(200).json(findComment);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
 module.exports = router;

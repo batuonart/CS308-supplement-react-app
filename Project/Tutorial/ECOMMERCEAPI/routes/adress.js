@@ -63,11 +63,21 @@ router.put("/:id", verifyToken, async (req, res) => {
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
         // Return ALL Adresss
-        const Adresss = await Adress.find();
-        return res.status(200).json(Adresss);
+        const Adress = await Adress.find();
+        return res.status(200).json(Adress);
     } catch (err) {
         return res.status(500).json(err);
     }
 })
+// GET Adress By UserId
+router.get("/findbyuser/:userId", verifyToken, async (req, res) => {
+    try {
+        const findAdress = await Adress.find({ userId: req.params.userId });
 
+        
+        return res.status(200).json(findAdress);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
 module.exports = router;
