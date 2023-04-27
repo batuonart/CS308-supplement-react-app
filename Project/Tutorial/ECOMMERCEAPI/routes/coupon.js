@@ -4,14 +4,14 @@ const Coupon = require("../models/Coupon");
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 // ADD Coupon
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
     const newCoupon = new Coupon({
         couponHeader: req.body.couponHeader,
         couponInfo: req.body.couponInfo,
         couponPoint: req.body.couponPoint,
         couponCode: req.body.couponCode,
         couponType: req.body.couponType,
-        couponCode: req.body.couponAmount,
+        couponAmount: req.body.couponAmount,
     });
 
     try {
@@ -45,7 +45,7 @@ router.get("/find/:id", verifyToken, async (req, res) => {
     }
 })
 
-// GET Coupon By Copuon Name
+// GET Coupon By Copuon Code
 router.get("/findbycode/:couponCode", verifyToken, async (req, res) => {
     try {
         const findCoupon = await Coupon.findOne({ couponCode: req.params.couponCode });
