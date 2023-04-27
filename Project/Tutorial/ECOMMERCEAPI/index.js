@@ -15,6 +15,12 @@ const cors = require("cors");
 
 dotenv.config();
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Methods']
+}));
+
 // Use mongoose to connnect to our Mango Cloud Database
 mongoose.
     connect(process.env.MONGO_URL)
@@ -37,6 +43,8 @@ app.use("/api/products", productsRoute);
 app.use("/api/carts", cartsRoute); 
 app.use("/api/orders", ordersRoute); 
 app.use(cors());
+
+
 app.use("/api/checkout", stripeRoute); 
 
 
