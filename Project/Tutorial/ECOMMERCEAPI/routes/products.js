@@ -40,6 +40,29 @@ router.get("/find/:id", async (req, res) => {
     }
 })
 
+//Using $regex to find name by substr. Ex: Finding Hardline by line or ard
+router.get("/findbytitle/:title", async (req, res) => {
+    try {
+        const product = await Product.find( {title: { $regex: req.params.title}})
+        // Send everything but password. 
+        // Send user the access token
+        return res.status(200).json(product);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+//Using $regex to find name by substr. Ex: Finding Banana Protein Powder by Banana, protein ...
+router.get("/findbydesc/:desc", async (req, res) => {
+    try {
+        const product = await Product.find( {desc: { $regex: req.params.desc}})
+        // Send everything but password. 
+        // Send user the access token
+        return res.status(200).json(product);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
 // GET ALL USERS, everyone can get all products.
 router.get("/", async (req, res) => {
     const qNew = req.query.new;
