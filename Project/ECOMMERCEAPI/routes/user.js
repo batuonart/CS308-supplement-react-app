@@ -3,6 +3,7 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 
 // Here, we'll be using express router.
 const router = require("express").Router();
+
 // UPDATE
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     if (req.body.password) {
