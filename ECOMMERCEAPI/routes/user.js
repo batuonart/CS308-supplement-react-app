@@ -1,4 +1,6 @@
 const User = require("../models/User");
+var CryptoJS = require('crypto-js');
+
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 // Here, we'll be using express router.

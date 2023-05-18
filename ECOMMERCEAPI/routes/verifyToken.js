@@ -35,4 +35,27 @@ const verifyTokenAndAdmin = (req, res, next) => {
         }
     });
 }
-module.exports = { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin }
+
+const verifyTokenAndProductManager = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.ProductManager) {
+            next();
+        } else {
+            return res.status(403).json("You are not allowed to do that!")
+        }
+    });
+}
+
+const verifyTokenAndSalesManager = (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user.Salesmanager) {
+            next();
+        } else {
+            return res.status(403).json("You are not allowed to do that!")
+        }
+    });
+}
+
+
+
+module.exports = { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin, verifyTokenAndProductManager, verifyTokenAndSalesManager }
