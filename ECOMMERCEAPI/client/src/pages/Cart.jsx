@@ -229,6 +229,8 @@ const Cart = () => {
         }
     }, [stripeToken, sum, navigate]);
 
+    const user = useSelector( state => state.user.currentUser );
+
 
     return (
         <Container>
@@ -307,18 +309,26 @@ const Cart = () => {
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>${sum}</SummaryItemPrice>
                         </SummaryItem>
-                        <StripeCheckout
-                            name="SUPPS"
-                            image="https://avatars.githubusercontent.com/u/1486366?v=4"
-                            billingAddress
-                            shippingAddress
-                            description={`Your total is $${sum}`}
-                            amount={sum * 100}
-                            token={onToken}
-                            stripeKey={KEY}
-                        >
-                            <Button>CHECKOUT NOW</Button>
-                        </StripeCheckout>
+                        
+                        {user ?                        
+                            <StripeCheckout
+                                name="SUPPS"
+                                image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                                billingAddress
+                                shippingAddress
+                                description={`Your total is $${sum}`}
+                                amount={sum * 100}
+                                token={onToken}
+                                stripeKey={KEY}
+                            >
+                                <Button> CHECKOUT NOW! </Button>
+                            </StripeCheckout>
+                            :
+                            <Link to="/login" style={{ textDecoration: "none", color: "black" }}>
+                                <Button>All Set? Sign In!</Button>
+                            </Link>
+                        }
+
                     </Summary>
                 </Bottom>
             </Wrapper>

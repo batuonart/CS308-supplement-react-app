@@ -8,6 +8,7 @@ import { mobile } from "../responsive"
 import { useLocation } from "react-router-dom"
 import { useState } from "react"
 import { useSelector } from "react-redux"
+import SearchMobile from "../components/SearchMobile"
 
 const Container = styled.div``
 const Title = styled.h1`
@@ -73,30 +74,17 @@ const ProductList = () => {
                 <Option>Peach</Option>
                 <Option>Lemon</Option>
                 <Option>unflavored</Option>
-                {/* <Option>Blue</Option>
-                <Option>Yellow</Option>
-                <Option>Green</Option> */}
             </Select>
             <Select name="weight" onChange={ handleFilters }>
                 <Option disabled>
                 Size
                 </Option>
                 <Option>1000 mL</Option> 
-                {/* <Option>500 mL</Option> 
-                <Option>3000 Gr</Option> 
-                <Option>500 Gr</Option> 
-                <Option>350 Gr</Option> 
-                <Option>3500 Gr</Option> 
-                <Option>2800 Gr</Option> 
-                <Option>650 Gr</Option> 
-                <Option>2600 Gr</Option>  */}
-                
-
-                {/* <Option>1000G</Option>
-                <Option>1500G</Option>
-                <Option>2000G</Option>
-                <Option>2500G</Option> */}
           </Select>
+        </Filter>
+        <Filter>
+            <FilterText>Search by Name:</FilterText>
+            <SearchMobile/>
         </Filter>
         <Filter>
             <FilterText>Sort Products:</FilterText>

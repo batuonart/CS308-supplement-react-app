@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Search, ShoppingCartOutlined, ExitToAppOutlined } from '@material-ui/icons'
-import { Badge } from '@material-ui/core'
+import { Badge, Button } from '@material-ui/core'
 import { mobile } from "../responsive"
 import Register from "../pages/Register"
 import { Link } from 'react-router-dom'
