@@ -43,13 +43,10 @@ const Search = () => {
     }
 
     const addWord = async () => {
-        const res1 = await publicRequest.get("/products/findbytitle/" + word);
+        const res1 = await publicRequest.get("/products/findbyall/" + word);
         setProduct(res1.data)
     }
-    const addWordDesc = async () => {
-        const res2 = await publicRequest.get("/products/findbydesc/" + word);
-        setProduct(res2.data)
-    }
+
 
 
   return (
@@ -62,10 +59,7 @@ const Search = () => {
                     addWord();
                     }} style={{width: "200px"}}>Search by Title
                 </Button>      
-                <Button onClick={() => {
-                    addWordDesc();
-                    }} style={{width: "200px"}}>Search by Desc
-                </Button>       
+
 
             </SearchContainer>
             <ProductContainer>
