@@ -3,6 +3,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { useState } from "react"
+import { useEffect } from "react"
+import { publicRequest } from "../requestMethod"
+
 
 const Info = styled.div`
     opacity: 0;
@@ -14,6 +18,7 @@ const Info = styled.div`
     background-color: rgba(0,0,0,0.2);
     z-indeX: 3;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: all 0.5s ease;
@@ -33,6 +38,7 @@ const Container = styled.div`
     position: relative;
 
     &:hover ${Info}{
+
         opacity: 1;
     }
 `
@@ -66,8 +72,22 @@ const Icon = styled.div`
         transform: scale(1.1);
     }
 `
+const Title = styled.h1`
+    color: white;
+    font-weight: 800;
+`
+
+
+
+const Price = styled.span`
+    color: white;
+    font-weight: 800;
+    font-size: 20px;
+`
 
 const Product = ( { item } ) => {
+
+   
 
 
 
@@ -76,9 +96,8 @@ const Product = ( { item } ) => {
       <Circle />
       <Image src={ "https://productimages.hepsiburada.net/s/199/1500/110000169922427.jpg" } />
       <Info>
-        {/* <Icon >
-            <ShoppingCartOutlined />
-        </Icon> */}
+        <Title>{item.title}</Title>
+        {/*<Price>${item.price}</Price>  ADD IF NEEDED*/}
         <Icon>
             <Link to={`/product/${item._id}`}>
                 <SearchOutlined />
