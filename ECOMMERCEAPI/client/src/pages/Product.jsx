@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import { publicRequest } from "../requestMethod"
 import { addProduct } from "../redux/productRedux"
 import { useDispatch, useSelector } from 'react-redux'
+import Comments from "../components/Comments"
 
 const Container = styled.div``
 
@@ -136,35 +137,6 @@ const AmountButton = styled.button`
         background-color: #f8f4f4;
     }
 `
-const CommentContainer = styled.div`
-    margin-left: 30px;
-`; 
-const Rating = styled.div`
-    font-weight: 700;
-    font-size: 30px;
-    color:teal;
-`
-const CommentName = styled.div`
-    font-weight: 800;
-`
-const CommentDesc = styled.div`
-    margin-top: 10px;
-    font-weight: 500;
-`
-
-const CommentSubmit = styled.div`
-    display: flex;
-    flex-direction: column;
-`
-const Input = styled.input`
-    margin: 10px 0px;;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid lightgray;
-`
-const CommentLine = styled.hr`
-    margin: 30px;
-`
 
 const ErrorTitle = styled.h2`
     font-weight: 300;
@@ -178,12 +150,7 @@ const Product = () => {
     const location = useLocation();
     const id = location.pathname.split( "/" )[2] ;
     const dispatch = useDispatch();
-    const [product, setProduct] = useState({});
-       //comments
-    const[comments,setComments] = useState([]);
-    const[userRating,setRating] = useState(0);
-    const[userDesc,setDesc] = useState("");
-    const userId = 31;
+    const [product, setProduct] = useState({});  
     const [errorMessage, setErrorMessage] = useState('');
     
     useEffect(() => {
@@ -191,8 +158,6 @@ const Product = () => {
             try {
                 const res = await publicRequest.get( "/products/find/" + id )
                 setProduct( res.data )
-                const commentData = await publicRequest.get("/comments/findbyproduct/" + id)
-                setComments(commentData.data)
             } catch (error) {
                 
             }
@@ -204,26 +169,10 @@ const Product = () => {
     const [selectedSize, setSize] = useState("");
 
      //ADD COMMENT
-    const handleRating = ( e ) => {
-
-        setRating(e.target.value);
-    }
-    const handleDesc = ( e ) => {
-
-        setDesc(e.target.value);
-    }
+   
     const user = useSelector( state => state.user.currentUser );
 
-    const addUserComment = async () => {
-        let comment = {
-            rating: userRating,
-            usercomment: userDesc,
-            productId: id,
-            username: user.username,
-            userId : userId
-        }
-        await publicRequest.post("/comments/", comment)
-    }
+   
 
     const [quantity, setQuantity] = useState(1);
     let increment = () => setQuantity( quantity + 1 );
@@ -308,42 +257,7 @@ const Product = () => {
                 <ErrorTitle>{errorMessage}</ErrorTitle>
             </InfoContainer>
         </Wrapper>
-        <CommentContainer>
-            <CommentSubmit>
-                <h2>Add Comment</h2>
-                <hr/>
-                {user ? 
-                    <><Input placeholder="Rating" style={{width: "50px"}} onChange={ (e) => handleRating(e) }/>
-                    <Input placeholder="Text"style={{width: "500px"}} onChange={ (e) => handleDesc(e) }/>
-                    <Button onClick={() => {
-                    addUserComment();
-                    window.location.reload();
-                    }} style={{width: "100px"}}>SUBMIT</Button>
-                    </>:
-                    <div>Please sign in first.</div>
-
-
-                }
-               
-            </CommentSubmit>
-            <br/>
-            <h2>Comments</h2>
-            {comments.length > 0 ? (
-                comments.map(comment => {
-                    return <div key={comment.id}> 
-                    <CommentLine/>
-                    <Rating><StarOutlined/>{comment.rating}</Rating>
-                    <CommentName>{comment.userName} </CommentName>
-                    <CommentDesc> 
-                    {comment.isPassed === true ? (
-                    <div>{comment.userComment}</div>
-                    ) : (
-                    <div><i>Comment awaits approval</i></div>
-                    )}
-                    </CommentDesc></div>
-                })
-            ):(<div>No comments yet.</div>)}
-        </CommentContainer>
+        <Comments/>
         <Newsletter />
         <Footer />
     </Container>
