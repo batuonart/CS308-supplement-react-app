@@ -59,7 +59,7 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
 })
 
 // GET ALL, View all carts of all users.
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         // Return ALL carts
         const orders = await Order.find();
