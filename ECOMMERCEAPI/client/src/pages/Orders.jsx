@@ -10,10 +10,16 @@ import { useEffect } from "react"
 import { useSelector } from 'react-redux'
 
 const OrderContainer = styled.div`
+    margin-left: 20px;
+`; 
+const OrderTextContainer = styled.div`
     margin-left: 30px;
+    display: flex;
+    flex-direction: row;
 `; 
 const OrderStatus = styled.div`
     font-weight: 700;
+    margin-left: 5px;
     font-size: 30px;
     color:teal;
 `
@@ -25,7 +31,7 @@ const OrderaAdress = styled.div`
 
 const ProductContainer = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
@@ -35,6 +41,7 @@ const ProductContainer = styled.div`
     margin: 5px; /* margin between items */
   }
 `
+
 
 const PlainLine = styled.hr`
     margin: 30px;
@@ -66,7 +73,10 @@ const Orders = () => {
       {orders.length > 0 ? (
         orders.map(order => {
             return <div key={order._id}> 
-            <OrderStatus>{order.satus}</OrderStatus>
+            <OrderTextContainer>
+              <OrderStatus style={{color: "black"}}>Status: </OrderStatus>
+              <OrderStatus>{order.satus}</OrderStatus>
+            </OrderTextContainer>      
             <ProductContainer>
               {order.products.length > 0 ? (
                 order.products.map(product => {
