@@ -9,7 +9,7 @@ const OrderSchema = new mongoose.Schema(
                     type: String
                 },
                 productTitle: {type: String},
-                productIng: {type: String},
+                productImg: {type: String},
                 quantity: {
                     type: Number,
                     default: 1, //Default number of items to add to Order.
