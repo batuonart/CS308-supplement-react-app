@@ -8,6 +8,8 @@ const OrderSchema = new mongoose.Schema(
                 productId: {
                     type: String
                 },
+                productTitle: {type: String},
+                productIng: {type: String},
                 quantity: {
                     type: Number,
                     default: 1, //Default number of items to add to Order.
