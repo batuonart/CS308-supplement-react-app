@@ -10,7 +10,6 @@ import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import { useEffect } from "react"
 import { publicRequest } from "../requestMethod"
-import { addProduct } from "../redux/productRedux"
 import { useDispatch, useSelector } from 'react-redux'
 
 const CommentContainer = styled.div`
