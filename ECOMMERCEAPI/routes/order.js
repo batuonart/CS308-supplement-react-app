@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const Order = require("../models/Order");
+const Cart = require("../models/Cart");
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 // Here, we'll be using express router.
@@ -45,20 +46,20 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 
 // GET USER ORDERS
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
     try {
         // Not using findOne here because user can have more than one orders.
-        const cart = await Cart.find({ userId: req.params.userId });
+        const orders = await Order.find({ userId: req.params.userId });
         // Send everything but password. 
         // Send user the access token
-        return res.status(200).json(cart);
+        return res.status(200).json(orders);
     } catch (err) {
         return res.status(500).json(err);
     }
 })
 
 // GET ALL, View all carts of all users.
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         // Return ALL carts
         const orders = await Order.find();

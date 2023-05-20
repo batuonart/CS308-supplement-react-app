@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Product from "./pages/Product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
+import Orders from "./pages/Orders";
+
 import {
     BrowserRouter as Router,
     Routes,
@@ -29,6 +31,8 @@ const App = () => {
                 <Route path="/products/:category" element={<ProductList />}></Route>
                 <Route path="/success" element={<Success />}></Route>
                 <Route path="/search" element={<Search />}></Route>
+                <Route path="/orders" element={<Orders />}></Route>
+
             </Routes>
         </Router>
     );

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Search, ShoppingCartOutlined, ExitToAppOutlined } from '@material-ui/icons'
-import { Badge, Button } from '@material-ui/core'
+import { Search, ShoppingCartOutlined, ExitToAppOutlined, AccountCircle } from '@material-ui/icons'
+import { Badge, Menu, Button } from '@material-ui/core'
 import { mobile } from "../responsive"
 import Register from "../pages/Register"
 import { Link } from 'react-router-dom'
@@ -34,7 +34,8 @@ const Left = styled.div`
 `
 
 const Language = styled.span`
-    font-size: 14px;
+    font-size: 20px;
+    font-weight: 800;
     cursor: pointer;
     ${mobile({
         display: "none"
@@ -91,10 +92,12 @@ const MenuItem = styled.div`
 
 const Greeting = styled.span`
     font-size: 20px;
-    margin-left: 25px;
-    margin-bottom: 10px;
+    
     cursor: auto;
     font-weight: 700;
+`
+const ProfilePicture = styled.div`
+
 `
 
 const Navbar = () => {
@@ -113,12 +116,13 @@ const Navbar = () => {
             <Wrapper>
                 <Left>
                     <Language>EN</Language>
-                    <SearchContainer>
-                        {/* <Input placeholder="Search"/> */}
-                        <Link to="/search">
-                            <Search style={{color: "gray", fontSize: 16}}/>
+                    <MenuItem>
+                    <Link to="/search">
+                            <Search style={{color: "black", fontSize: 25}}/>
                         </Link>
-                    </SearchContainer>
+                    </MenuItem>
+                        {/* <Input placeholder="Search"/> */}
+                        
                 </Left>
                 <Center>
                     <Link to="/" style={{textDecoration: "none", color: "black"}}>
@@ -129,10 +133,21 @@ const Navbar = () => {
                 </Center>
                 <Right>
                     { user ? 
-                        <><MenuItem onClick={ handleClick }>
-                            <ExitToAppOutlined />
-                            <Greeting>Hello {user.username}</Greeting>
+                        <>
+                        <MenuItem>
+                            <Greeting>Hello {user.username}!</Greeting>
                         </MenuItem>
+                        <MenuItem onClick={ handleClick }>
+                            <ExitToAppOutlined />
+                        </MenuItem>
+                        <MenuItem>
+                            <ProfilePicture>
+                                <Link to="/orders">
+                                <AccountCircle style={{color: "black", fontSize: 30}}/>
+                            </Link>
+                            </ProfilePicture>
+                        </MenuItem>
+                       
                         </>
                         : <><Link to="/register" style={{ textDecoration: "none", color: "black" }}>
                             <MenuItem>REGISTER</MenuItem>
