@@ -207,7 +207,6 @@ const Cart = () => {
     const onToken = (token) => {
         setStripeToken(token);
     }
-    // console.log( 'stripeToken => ', stripeToken );
 
     let priceArray = []
     let sum;
