@@ -1,15 +1,14 @@
 const router = require("express").Router();
 
 const Order = require("../models/Order");
-const Cart = require("../models/Cart");
-const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+// const Cart = require("../models/Cart");
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 // Here, we'll be using express router.
 
 // CREATE CART
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", verifyTokenAndAuthorization, async (req, res) => {
     const newOrder = new Order(req.body);
-
     try {
         const savedOrder = await newOrder.save();
         return res.status(200).json(savedOrder);
