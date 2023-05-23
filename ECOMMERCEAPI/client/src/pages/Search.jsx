@@ -44,6 +44,7 @@ const Search = () => {
 
     const addWord = async () => {
         const res1 = await publicRequest.get("/products/findbyall/" + word);
+
         setProduct(res1.data)
     }
 

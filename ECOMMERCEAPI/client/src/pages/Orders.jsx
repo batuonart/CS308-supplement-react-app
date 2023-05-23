@@ -46,6 +46,11 @@ const ProductContainer = styled.div`
 const PlainLine = styled.hr`
     margin: 30px;
 `
+const Image = styled.img`
+    width: 30%;
+    height: 30%;
+    object-fit: cover;
+`
 
 const Orders = () => {
    const[orders,setOrders] = useState([]);
@@ -55,7 +60,7 @@ const Orders = () => {
    useEffect(() => {
        const getOrders = async () => {
            try {
-               const orderData = await publicRequest.get("/orders/")
+               const orderData = await publicRequest.get("/orders/find/"+id)
                console.debug("found")
                setOrders(orderData.data)
            } catch (error) {  
@@ -63,7 +68,7 @@ const Orders = () => {
            }
        };
        getOrders()
-   })
+   }, [id])
    //ADD "}, [id])" INSTED OF TOP
 
   return (
@@ -75,13 +80,15 @@ const Orders = () => {
             return <div key={order._id}> 
             <OrderTextContainer>
               <OrderStatus style={{color: "black"}}>Status: </OrderStatus>
-              <OrderStatus>{order.satus}</OrderStatus>
+              <OrderStatus>{order.status}</OrderStatus>
+              <Image src = {order.productImg}/>
+              
             </OrderTextContainer>      
             <ProductContainer>
               {order.products.length > 0 ? (
                 order.products.map(product => {
                   return <div key ={product._id}>
-                    <h1>{product._id}</h1>
+                    <h1>{product.productTitle}</h1>
                   </div>
                 })
               ):(<div>NO PRODUCTS</div>)}
@@ -92,7 +99,7 @@ const Orders = () => {
 
             </div>
         })
-    ):(<div>No orders yet.</div>)}  
+    ):(<h1>No orders yet.</h1>)}  
     </OrderContainer>
     
     <Newsletter />
