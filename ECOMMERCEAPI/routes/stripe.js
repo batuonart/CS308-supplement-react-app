@@ -5,9 +5,10 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 
 
 router.post("/payment", verifyToken, (req, res) => {
+    console.log(req.body, "- stripe.js");
     stripe.charges.create(
         {
-            source: req.body.tokenID,
+            source: "tok_visa",
             amount: req.body.amount,
             currency: "usd",
         },
@@ -16,6 +17,7 @@ router.post("/payment", verifyToken, (req, res) => {
         },
         async (stripeErr, stripeRes) => {
             if (stripeErr) {
+                console.log(stripeErr);
                 return res.status(500).json(stripeErr);
             } else {
                 const newOrder = new Order({
@@ -25,10 +27,13 @@ router.post("/payment", verifyToken, (req, res) => {
                     address: req.body.address,
                     // add any other fields you need
                 });
+                console.log(req.body);
                 try {
                     const savedOrder = await newOrder.save();
+                    console.log(savedOrder);
                     return res.status(200).json({ stripeRes, savedOrder });
                 } catch (err) {
+                    console.log(err);
                     return res.status(500).json(err);
                 }
             }

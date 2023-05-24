@@ -211,22 +211,37 @@ const Cart = () => {
     let priceArray = []
     let sum;
     const navigate = useNavigate();
-
+    let user = useSelector(state => state.user.currentUser);
+    let token = user.accessToken;
+    console.log(token);
     useEffect(() => {
         const makeRequest = async () => {
             try {
                 const res = await userRequest.post("/checkout/payment", {
+                    source: "tok_visa",
                     tokenID: stripeToken.id,
                     amount: sum * 100,
-                });
+                    currency: "usd",
+                    address: "Zürafa caddesi sürtükler apartmanı 31/69",
+                    userId: user._id
+                }, { headers: { 'token': `Bearer ${token}` } });
+
                 navigate("../success", { state: { stripeData: res.data, products: cart } });
-            } catch (error) { }
+            } catch (error) {
+                // console.log('Source:', "tok_visa");
+                // console.log('TokenID:', stripeToken.id);
+                // console.log('Amount:', sum * 100);
+                // console.log('Currency:', "usd");
+                // console.log('User:', user._id);
+                // console.log('Address:', user.);
+                console.log("Error:", error)
+            }
         };
 
         if (stripeToken) {
             makeRequest();
         }
-    }, [stripeToken, sum, navigate]);
+    }, [token, user._id, cart, stripeToken, sum, navigate]);
 
 
     return (
