@@ -222,10 +222,11 @@ const Cart = () => {
                     tokenID: stripeToken.id,
                     amount: sum * 100,
                     currency: "usd",
-                    address: "Zürafa caddesi sürtükler apartmanı 31/69",
-                    userId: user._id
+                    address: user.address,
+                    userId: user._id,
+                    products: cart
                 }, { headers: { 'token': `Bearer ${token}` } });
-
+                console.log(res);
                 navigate("../success", { state: { stripeData: res.data, products: cart } });
             } catch (error) {
                 // console.log('Source:', "tok_visa");
@@ -241,7 +242,7 @@ const Cart = () => {
         if (stripeToken) {
             makeRequest();
         }
-    }, [token, user._id, cart, stripeToken, sum, navigate]);
+    }, [user.address, token, user._id, cart, stripeToken, sum, navigate]);
 
 
     return (
@@ -306,7 +307,7 @@ const Cart = () => {
                             <SummaryItemPrice>${cart.products.map((p) => {
                                 priceArray.push(p.price * p.quantity);
                                 sum = priceArray.reduce((a, b) => a + b)
-
+                                return sum;
                             })}{sum}</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem>
