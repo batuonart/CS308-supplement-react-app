@@ -58,8 +58,6 @@ const Button = styled.button`
     color: white;
     cursor: pointer;
 `
-
-
 const Registered = styled.h4`
     margin-top: 20px;
     display: flex;
@@ -75,6 +73,7 @@ const Register = () => {
     
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [address, setAddress] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const { isFetching, error } = useSelector( (state) => state.user );
@@ -88,6 +87,11 @@ const Register = () => {
 
         setPassword(e.target.value);
     }
+
+    const handleAddress = ( e ) => {
+        setAddress(e.target.value);
+    }
+
     const handleEmail = ( e ) => {
 
         setEmail(e.target.value);
@@ -95,7 +99,7 @@ const Register = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        register(dispatch, { username, password, email });    
+        register(dispatch, { username, email, password, address });    
     };
   return (
     <Container>
@@ -104,6 +108,7 @@ const Register = () => {
             <Form>
                 <Input placeholder="Username" onChange={ (e) => handleUsername(e) }/>
                 <Input placeholder="Email" onChange={ (e) => handleEmail(e) }/>
+                <Input placeholder="Address" onChange={ (e) => handleAddress(e) }/>
                 <Input type="password" placeholder="Password" onChange={ (e) => handlePassw(e) }/>
                 <Input type="password" placeholder="Confirm password" onChange={ (e) => handlePassw(e) }/>
 
