@@ -60,7 +60,12 @@ const Orders = () => {
    useEffect(() => {
        const getOrders = async () => {
            try {
-               const orderData = await publicRequest.get("/orders/find/"+id)
+               const orderData = await publicRequest.get("/orders/find/" + id, {
+                headers: {
+                  token: `Bearer ${user.accessToken}`
+                }
+              });
+
                console.debug("found")
                setOrders(orderData.data)
            } catch (error) {  

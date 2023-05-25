@@ -202,7 +202,7 @@ const Product = () => {
         <Announcement />
         <Wrapper>
             <ImgContainer>
-                <Image src="https://contents.mediadecathlon.com/p1960881/k$c3ab56961217a74264138e62cfab0177/sq/gainer.jpg?format=auto&f=800x0" />
+                <Image src= {product.img} />
             </ImgContainer>
             <InfoContainer>
                 <Title>{product.title}</Title>

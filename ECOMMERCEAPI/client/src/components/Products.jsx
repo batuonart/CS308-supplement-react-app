@@ -72,7 +72,7 @@ const Products = ({ cat, filters, sort }) => {
         <React.Fragment key= {item._id}>
         <Product item={item} />
         </React.Fragment>
-      )) : products.slice(0, 8).map((item) => (
+      )) : products.slice(0, 32).map((item) => (
         <React.Fragment key= {item._id}>
         <Product item={item} />
         </React.Fragment>
