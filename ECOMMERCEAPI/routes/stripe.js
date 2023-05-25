@@ -34,11 +34,11 @@ router.post("/payment", verifyToken, (req, res) => {
                     let currUser = await axios.get(`http://localhost:5000/api/users/find/${req.body.userId}`);
                     if (currUser) {
                         console.log("Current user:", currUser);
-                        const customer = await stripe.customers.create({
-                            email: currUser.email,
-                            name: currUser.username,
-                            address: currUser.address,
-                        });
+                        // const customer = await stripe.customers.create({
+                        //     email: currUser.email,
+                        //     name: currUser.username,
+                        //     address: currUser.address,
+                        // });
                         // const invoice = await stripe.invoices.create({
                         //     customer: customer.id,
                         //     collection_method: 'send_invoice', // This sends an email to the customer with a link to the invoice

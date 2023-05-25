@@ -212,12 +212,14 @@ const Cart = () => {
     let sum;
     const navigate = useNavigate();
     let user = useSelector(state => state.user.currentUser);
-    let token="";
+    let token="", address="", id="";
     if (user){
         token = user.accessToken;
+        address = user.address;
+        id = user._id;
     } 
-    // console.log("Token is:", token);
-    // console.log("Cart is:", cart);
+    console.log("Token is:", token);
+    console.log("Cart is:", cart);
 
     useEffect(() => {
         const makeRequest = async () => {
@@ -227,8 +229,8 @@ const Cart = () => {
                     tokenID: stripeToken.id,
                     amount: sum * 100,
                     currency: "usd",
-                    address: user.address,
-                    userId: user._id,
+                    address: address,
+                    userId: id,
                     products: cart
                 }, { headers: { 'token': `Bearer ${token}` } });
                 // console.log(cart);
@@ -248,7 +250,7 @@ const Cart = () => {
             makeRequest();
         }
 
-    }, [user.address, user._id, token, cart, stripeToken, sum, navigate]);
+    }, [address, id, token, cart, stripeToken, sum, navigate]);
 
 
     return (
