@@ -74,7 +74,6 @@ const Orders = () => {
        };
        getOrders()
    }, [id])
-   //ADD "}, [id])" INSTED OF TOP
 
   return (
     <div> <Navbar/>
@@ -104,7 +103,7 @@ const Orders = () => {
 
             </div>
         })
-    ):(<h1>No orders yet.</h1>)}  
+    ):(<h1>{orders.length}</h1>)}  
     </OrderContainer>
     
     <Newsletter />
