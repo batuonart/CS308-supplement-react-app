@@ -138,7 +138,9 @@ const Navbar = () => {
                             <Greeting>Hello {user.username}!</Greeting>
                         </MenuItem>
                         <MenuItem onClick={ handleClick }>
-                            <ExitToAppOutlined />
+                            <Link to="/">
+                                <ExitToAppOutlined />
+                            </Link>
                         </MenuItem>
                         <MenuItem>
                             <ProfilePicture>

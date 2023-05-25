@@ -212,8 +212,13 @@ const Cart = () => {
     let sum;
     const navigate = useNavigate();
     let user = useSelector(state => state.user.currentUser);
-    let token = user.accessToken;
-    console.log(token);
+    let token="";
+    if (user){
+        token = user.accessToken;
+    } 
+    // console.log("Token is:", token);
+    // console.log("Cart is:", cart);
+
     useEffect(() => {
         const makeRequest = async () => {
             try {
@@ -226,7 +231,7 @@ const Cart = () => {
                     userId: user._id,
                     products: cart
                 }, { headers: { 'token': `Bearer ${token}` } });
-                console.log(res);
+                // console.log(cart);
                 navigate("../success", { state: { stripeData: res.data, products: cart } });
             } catch (error) {
                 // console.log('Source:', "tok_visa");
@@ -235,14 +240,15 @@ const Cart = () => {
                 // console.log('Currency:', "usd");
                 // console.log('User:', user._id);
                 // console.log('Address:', user.);
-                console.log("Error:", error)
+                // console.log("Error:", error)
             }
         };
 
         if (stripeToken) {
             makeRequest();
         }
-    }, [user.address, token, user._id, cart, stripeToken, sum, navigate]);
+
+    }, [user.address, user._id, token, cart, stripeToken, sum, navigate]);
 
 
     return (
@@ -258,7 +264,7 @@ const Cart = () => {
                     <TopTexts>
                         <TopText>Shopping Bag({cart.products.length})</TopText>
                     </TopTexts>
-                    <TopButton type='filled'>CHECKOUT NOW</TopButton>
+                    {user && <TopButton type='filled'>CHECKOUT NOW</TopButton>}
                 </Top>
                 <Bottom>
                     <Info>
@@ -307,7 +313,6 @@ const Cart = () => {
                             <SummaryItemPrice>${cart.products.map((p) => {
                                 priceArray.push(p.price * p.quantity);
                                 sum = priceArray.reduce((a, b) => a + b)
-                                return sum;
                             })}{sum}</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem>
@@ -322,18 +327,28 @@ const Cart = () => {
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>${sum}</SummaryItemPrice>
                         </SummaryItem>
-                        <StripeCheckout
-                            name="SUPPS"
-                            image="https://avatars.githubusercontent.com/u/1486366?v=4"
-                            billingAddress
-                            shippingAddress
-                            description={`Your total is $${sum}`}
-                            amount={sum * 100}
-                            token={onToken}
-                            stripeKey={KEY}
-                        >
-                            <Button>CHECKOUT NOW</Button>
-                        </StripeCheckout>
+
+
+                        {user ?                        
+                            <StripeCheckout
+                                name="SUPPS"
+                                image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                                billingAddress
+                                shippingAddress
+                                description={`Your total is $${sum}`}
+                                amount={sum * 100}
+                                token={onToken}
+                                stripeKey={KEY}
+                            >
+                                <Button> CHECKOUT NOW! </Button>
+                            </StripeCheckout>
+                            :
+                            <Link to="/login" style={{ textDecoration: "none", color: "black" }}>
+                                <Button>All Set? Sign In!</Button>
+                            </Link>
+                        }
+
+
                     </Summary>
                 </Bottom>
             </Wrapper>
