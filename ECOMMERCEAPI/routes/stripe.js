@@ -119,7 +119,10 @@ router.post("/payment", verifyToken, (req, res) => {
                         customer: customer.id,
                         collection_method: 'send_invoice',
                         days_until_due: 5,
-                        auto_advance: true,
+                        customer_address: currUser.address,
+                        currency: "usd",
+                        description: "Payment successful!",
+                        footer: "Thank you for choosing SUPPS",
                         default_tax_rates: [], // add any tax rates here
                     });
                     console.log(invoice)
