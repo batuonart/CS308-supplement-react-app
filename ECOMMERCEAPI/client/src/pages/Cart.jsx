@@ -218,8 +218,8 @@ const Cart = () => {
         address = user.address;
         id = user._id;
     } 
-    console.log("Token is:", token);
-    console.log("Cart is:", cart);
+    // console.log("Token is:", token);
+    // console.log("Cart is:", cart);
 
     useEffect(() => {
         const makeRequest = async () => {
