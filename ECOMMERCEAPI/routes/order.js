@@ -34,6 +34,20 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 })
 
+// Change status
+router.put("/changestatus/:id", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
+            status: req.body.status
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedOrder);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+
+})
 // DELETE CART
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {

@@ -121,5 +121,25 @@ router.put("/:id", verifyToken, async (req, res) => {
     }
 })
 
+// Add Rating Product
+router.put("/addrating/:id", verifyToken, async (req, res) => {
+    const product = await Product.findById(req.params.id)
+    let addRating = req.body.rating
+    let prevRating = product.rating
+    let totalrating= addRating+prevRating
 
+    let rCount= product.ratingcount
+    let incrementedRCount=rCount + 1
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+            rating: totalrating,
+            ratingcount: incrementedRCount
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedProduct);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
 module.exports = router;
