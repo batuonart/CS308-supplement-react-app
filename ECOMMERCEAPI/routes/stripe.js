@@ -32,51 +32,128 @@ router.post("/payment", verifyToken, (req, res) => {
                 try {
                     const savedOrder = await newOrder.save();
                     let currUser = await axios.get(`http://localhost:5000/api/users/find/${req.body.userId}`);
-                    console.log(currUser);
+                    // console.log("currUser:", currUser);
+                    // console.log("savedOrder:", savedOrder);
+                    // console.log("savedOrder.products:", savedOrder.products);
+                    // console.log("savedOrder.products._id:", savedOrder.products._id);
 
-                    
+
+
                     const customer = await stripe.customers.create({
                         email: "developer.egemen@gmail.com",
                         name: currUser.username,
                         address: currUser.address,
                     });
+
+                    // let sum = 0;
+                    let invoiceItems = [];
+
+                    // const invoice = await stripe.invoices.create({
+                    //     customer: customer.id,
+                    //     collection_method: 'send_invoice',
+                    //     days_until_due: 5,
+                    //     customer_address: currUser.address,
+                    //     currency: "usd",
+                    //     description: "Payment successful!",
+                    //     footer: "Thank you for choosing SUPPS",
+                    // });
+
+                    // Create invoice items
+                    for (let productSaved of savedOrder.products) {
+                        // console.log("savedOrder.productSaved.product:", productSaved._id.toString())
+                        let currProduct = await axios.get(`http://localhost:5000/api/products/find/${productSaved._id.toString()}`);
+                        console.log(productSaved._id.toString());
+                        // console.log("currProduct.data", currProduct.data.title, currProduct.data.price);
+                        // sum += currProduct.data.price;
+
+                        const price = await stripe.prices.create({
+                            currency: 'usd',
+                            unit_amount: currProduct.data.price * 100, // convert to cents
+                            product_data: {
+                                name: currProduct.data.title,
+                                // description: currProduct.data.desc,
+                            },
+                        });
+                        console.log(price)
+                        // const invoice_item = await stripe.products.create({
+                        //     name: currProduct.data.title,
+                        //     default_price_data: {
+                        //         unit_amount: currProduct.data.price * 100, // Convert to cents
+                        //         currency: 'usd',
+                        //     },
+                        //     expand: ['default_price'],
+                        // });
+
+                        // const prods = await stripe.products.list({
+                        //     limit: 3,
+                        // });
+                        // console.log("=============================", prods)
+
+                        // const invoiceItem = await stripe.invoiceItems.create({
+                        //     customer: customer.id,
+                        //     invoice: invoice.id,
+                        //     // quantity: currProduct.data.rating, // make sure your currProduct object has 'quantity'
+                        //     // unit_amount: currProduct.data.price * 100, // convert to cents and make sure your currProduct object has 'unit_amount'
+                        //     // description: currProduct.data.desc,
+                        //     price_data : {
+                        //         'currency' : 'usd', 
+                        //         'unit_amount' :10000 ,
+                        //         'tax_behavior': 'exclusive'
+                        //         'product' : "prod_Ny1WelaXLPNW5e"
+                        //     }
+                        // });
+                        const invoiceItem = await stripe.invoiceItems.create({
+                            customer: customer.id,
+                            price: price.id,
+                        });
+                        console.log(invoiceItem)
+
+                        invoiceItems.push(invoiceItem);
+                        // console.log(invoiceItem)
+
+                    }
+                    console.log(invoiceItems)
+
+                    // await new Promise(resolve => setTimeout(resolve, 6000));
                     const invoice = await stripe.invoices.create({
                         customer: customer.id,
                         collection_method: 'send_invoice',
-                        days_until_due: 30,
-                        // customer_address:currUser.address,
-                        // amount_paid: 1000,
-                        // currency: "try"
+                        days_until_due: 5,
+                        auto_advance: true,
+                        default_tax_rates: [], // add any tax rates here
                     });
+                    console.log(invoice)
 
+                    // const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
+                    // const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
+
+
+                    // console.log("sum:", sum)
+                    // retreieve invoice
+                    // let invoiceId = "in_1NC0n1DAwaH6hFG0Jw3DncKP";  // replace with your invoice id
+
+                    // stripe.invoices.retrieve(
+                    //     invoiceId,
+                    //     function (err, invoice) {
+                    //         if (err) {
+                    //             console.log(err);
+                    //         } else {
+                    //             console.log("invoice.retrieve:",invoice);
+                    //         }
+                    //     }
+                    // );
                     const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
-                    const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
-                    
-                    console.log(invoice);
-                    console.log("sentInvoice:", sentInvoice);
-                    if (currUser) {
-                        // console.log("Current user:", currUser);
-                        // const customer = await stripe.customers.create({
-                        //     email: currUser.email,
-                        //     name: currUser.username,
-                        //     address: currUser.address,
-                        // });
-                        // const invoice = await stripe.invoices.create({
-                        //     customer: customer.id,
-                        //     collection_method: 'send_invoice', // This sends an email to the customer with a link to the invoice
-                        //     days_until_due: 30,
-                        // });
-                        // const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
-                        // const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
-                        // console.log(invoice)
-                        // console.log("--------------------------------------------------------------");
-                        // console.log(customer);
-                    }
-                    // console.log("request body:", req.body);
-                    // console.log(newOrder);
-                    // console.log(req.body.products);
 
-                    return res.status(200).json({ stripeRes, savedOrder });
+                    // Send the invoice via email (to the customer's email address)
+                    const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
+
+                    console.log("sentInvoice:", sentInvoice);
+                    console.log("finalizedInvoice:", finalizedInvoice);
+                    if (currUser) {
+                        // console.log(currUser);
+                    }
+
+                    return res.status(200).json({ stripeRes: sentInvoice, savedOrder: savedOrder, invoiceItems: invoiceItems });
                 } catch (err) {
                     // console.log(err);
                     return res.status(500).json(err);
