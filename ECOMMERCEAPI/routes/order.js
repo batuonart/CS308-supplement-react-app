@@ -7,7 +7,7 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 // Here, we'll be using express router.
 
 // CREATE CART
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
     const newOrder = new Order(req.body);
 
     try {
@@ -46,7 +46,7 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 
 // GET USER ORDERS
-router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:userId", async (req, res) => {
     try {
         // Not using findOne here because user can have more than one orders.
         const orders = await Order.find({ userId: req.params.userId });

@@ -8,14 +8,15 @@ import { publicRequest } from "../requestMethod"
 import { useState } from "react"
 import { useEffect } from "react"
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 const OrderContainer = styled.div`
-    margin-left: 20px;
+    margin-left: 0px;
 `; 
 const OrderTextContainer = styled.div`
     margin-left: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 `; 
 const OrderStatus = styled.div`
     font-weight: 700;
@@ -34,39 +35,39 @@ const ProductContainer = styled.div`
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
   
-  & > div {
-    flex-basis: calc(33.33% - 10px); /* 33.33% is the width of each item, 10px is the space between items */
-    margin: 5px; /* margin between items */
-  }
 `
-
+const ProductDeatils = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+`
 
 const PlainLine = styled.hr`
     margin: 30px;
 `
+
+const ImageLink = styled(Link)`
+  text-decoration: none;
+`;
+
 const Image = styled.img`
-    width: 30%;
-    height: 30%;
-    object-fit: cover;
+    width: 200px;
+    height: 200px;
+    max-height: 200px;
+    object-fit: contain;
 `
 
 const Orders = () => {
    const[orders,setOrders] = useState([]);
    const user = useSelector( state => state.user.currentUser );
    const id = user._id;
+
    
    useEffect(() => {
        const getOrders = async () => {
            try {
-               const orderData = await publicRequest.get("/orders/find/" + id, {
-                headers: {
-                  token: `Bearer ${user.accessToken}`
-                }
-              });
-
-               console.debug("found")
+               const orderData = await publicRequest.get("/orders/find/" + id)
                setOrders(orderData.data)
            } catch (error) {  
             console.debug("error")
@@ -74,6 +75,11 @@ const Orders = () => {
        };
        getOrders()
    }, [id])
+
+  const getFormattedDate = (dateString) => {
+    const createdAtDate = new Date(dateString).toISOString().split('T')[0];
+    return createdAtDate;
+  };
 
   return (
     <div> <Navbar/>
@@ -83,16 +89,21 @@ const Orders = () => {
         orders.map(order => {
             return <div key={order._id}> 
             <OrderTextContainer>
-              <OrderStatus style={{color: "black"}}>Status: </OrderStatus>
               <OrderStatus>{order.status}</OrderStatus>
-              <Image src = {order.productImg}/>
-              
+              <h1>{order.address}</h1>
+              <h1>{getFormattedDate(order.createdAt)}</h1>
             </OrderTextContainer>      
             <ProductContainer>
               {order.products.length > 0 ? (
                 order.products.map(product => {
                   return <div key ={product._id}>
-                    <h1>{product.productTitle}</h1>
+                    <ProductDeatils>
+                      <Link to={`/product/${product.productId}`}>
+                        <Image src = {product.productImg}/>
+                      </Link>
+                      <h1>{product.productTitle}</h1>
+                      <h1>x{product.quantity}</h1>
+                    </ProductDeatils>
                   </div>
                 })
               ):(<div>NO PRODUCTS</div>)}
