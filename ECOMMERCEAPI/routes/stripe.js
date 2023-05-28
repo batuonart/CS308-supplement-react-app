@@ -153,7 +153,7 @@ router.post("/payment", verifyToken, (req, res) => {
                     console.log("sentInvoice:", sentInvoice);
                     console.log("finalizedInvoice:", finalizedInvoice);
                     if (currUser) {
-                        // console.log(currUser);
+                        console.log(currUser);
                     }
 
                     return res.status(200).json({ stripeRes: sentInvoice, savedOrder: savedOrder, invoiceItems: invoiceItems });
