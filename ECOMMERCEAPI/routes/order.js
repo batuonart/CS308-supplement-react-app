@@ -1,15 +1,14 @@
 const router = require("express").Router();
 
 const Order = require("../models/Order");
-const Cart = require("../models/Cart");
-const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+// const Cart = require("../models/Cart");
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 // Here, we'll be using express router.
 
 // CREATE CART
-router.post("/", async (req, res) => {
+router.post("/", verifyTokenAndAuthorization, async (req, res) => {
     const newOrder = new Order(req.body);
-
     try {
         const savedOrder = await newOrder.save();
         return res.status(200).json(savedOrder);
@@ -34,6 +33,20 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 })
 
+// Change status
+router.put("/changestatus/:id", verifyTokenAndAdmin, async (req, res) => {
+    try {
+        const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
+            status: req.body.status
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedOrder);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+
+})
 // DELETE CART
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     try {
@@ -46,7 +59,20 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 
 
 // GET USER ORDERS
-router.get("/find/:userId", async (req, res) => {
+router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        // Not using findOne here because user can have more than one orders.
+        const orders = await Order.find({ userId: req.params.userId });
+        // Send everything but password. 
+        // Send user the access token
+        return res.status(200).json(orders);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+// Get only user
+router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
     try {
         // Not using findOne here because user can have more than one orders.
         const orders = await Order.find({ userId: req.params.userId });

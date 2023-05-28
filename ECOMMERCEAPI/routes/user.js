@@ -35,7 +35,8 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
 })
 
 // GET USER, only admin can get user.
-router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
+// Removed verifyTokenandAdmin
+router.get("/find/:id", async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
         const { password, ...others } = user._doc;

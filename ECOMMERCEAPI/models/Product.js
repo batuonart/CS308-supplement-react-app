@@ -9,9 +9,9 @@ const ProductSchema = new mongoose.Schema({
     price: { type: Number },
     aroma: { type: Array, required: true },
     rating: { type: Number, default: 0},
-    ratingcount: { type: Number},
-    comments: { type: Array },
+    ratingcount: { type: Number, default: 0},
     inStock: { type: Boolean, default: true },
+    stockCount: {type: Number, default: 0},
 },
     { timestamps: true } //Auto create timestams
 );

@@ -207,27 +207,50 @@ const Cart = () => {
     const onToken = (token) => {
         setStripeToken(token);
     }
-    // console.log( 'stripeToken => ', stripeToken );
 
     let priceArray = []
     let sum;
     const navigate = useNavigate();
+    let user = useSelector(state => state.user.currentUser);
+    let token="", address="", id="";
+    if (user){
+        token = user.accessToken;
+        address = user.address;
+        id = user._id;
+    } 
+    // console.log("Token is:", token);
+    // console.log("Cart is:", cart);
 
     useEffect(() => {
         const makeRequest = async () => {
             try {
                 const res = await userRequest.post("/checkout/payment", {
+                    source: "tok_visa",
                     tokenID: stripeToken.id,
                     amount: sum * 100,
-                });
+                    currency: "usd",
+                    address: address,
+                    userId: id,
+                    products: cart
+                }, { headers: { 'token': `Bearer ${token}` } });
+                // console.log(cart);
                 navigate("../success", { state: { stripeData: res.data, products: cart } });
-            } catch (error) { }
+            } catch (error) {
+                // console.log('Source:', "tok_visa");
+                // console.log('TokenID:', stripeToken.id);
+                // console.log('Amount:', sum * 100);
+                // console.log('Currency:', "usd");
+                // console.log('User:', user._id);
+                // console.log('Address:', user.);
+                // console.log("Error:", error)
+            }
         };
 
         if (stripeToken) {
             makeRequest();
         }
-    }, [stripeToken, sum, navigate]);
+
+    }, [address, id, token, cart, stripeToken, sum, navigate]);
 
 
     return (
@@ -243,7 +266,7 @@ const Cart = () => {
                     <TopTexts>
                         <TopText>Shopping Bag({cart.products.length})</TopText>
                     </TopTexts>
-                    <TopButton type='filled'>CHECKOUT NOW</TopButton>
+                    {user && <TopButton type='filled'>CHECKOUT NOW</TopButton>}
                 </Top>
                 <Bottom>
                     <Info>
@@ -292,7 +315,6 @@ const Cart = () => {
                             <SummaryItemPrice>${cart.products.map((p) => {
                                 priceArray.push(p.price * p.quantity);
                                 sum = priceArray.reduce((a, b) => a + b)
-
                             })}{sum}</SummaryItemPrice>
                         </SummaryItem>
                         <SummaryItem>
@@ -307,18 +329,28 @@ const Cart = () => {
                             <SummaryItemText>Total</SummaryItemText>
                             <SummaryItemPrice>${sum}</SummaryItemPrice>
                         </SummaryItem>
-                        <StripeCheckout
-                            name="SUPPS"
-                            image="https://avatars.githubusercontent.com/u/1486366?v=4"
-                            billingAddress
-                            shippingAddress
-                            description={`Your total is $${sum}`}
-                            amount={sum * 100}
-                            token={onToken}
-                            stripeKey={KEY}
-                        >
-                            <Button>CHECKOUT NOW</Button>
-                        </StripeCheckout>
+
+
+                        {user ?                        
+                            <StripeCheckout
+                                name="SUPPS"
+                                image="https://avatars.githubusercontent.com/u/1486366?v=4"
+                                billingAddress
+                                shippingAddress
+                                description={`Your total is $${sum}`}
+                                amount={sum * 100}
+                                token={onToken}
+                                stripeKey={KEY}
+                            >
+                                <Button> CHECKOUT NOW! </Button>
+                            </StripeCheckout>
+                            :
+                            <Link to="/login" style={{ textDecoration: "none", color: "black" }}>
+                                <Button>All Set? Sign In!</Button>
+                            </Link>
+                        }
+
+
                     </Summary>
                 </Bottom>
             </Wrapper>
