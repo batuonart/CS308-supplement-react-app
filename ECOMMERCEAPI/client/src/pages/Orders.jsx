@@ -14,9 +14,9 @@ const OrderContainer = styled.div`
     margin-left: 0px;
 `; 
 const OrderTextContainer = styled.div`
+    justify-content: space-around;
     margin-left: 30px;
     display: flex;
-    flex-direction: column;
 `; 
 const OrderTextInfo = styled.div`
     font-weight: 700;
@@ -25,28 +25,35 @@ const OrderTextInfo = styled.div`
 `
 
 const ProductContainer = styled.div`
-    margin-top: 10px;
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
   
 `
-const ProductDeatils = styled.div`
+const ProductContainerSingle = styled.div`
+    
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    align-items: flex-start;
+`
+
+const ProductText = styled.div`
+    
+    font-weight: 700;
+    margin-top: 50px;
+    font-size: 30px;
 `
 
 const PlainLine = styled.hr`
-    margin: 30px;
-    color: teal;
+    margin: 40px;
 `
-
 
 const Image = styled.img`
     width: 200px;
     height: 200px;
+    max-height: 200px;
     object-fit: contain;
 `
 
@@ -68,9 +75,19 @@ const Orders = () => {
        getOrders()
    }, [id])
 
-  const getFormattedDate = (dateString) => {
-    const createdAtDate = new Date(dateString).toISOString().split('T')[0];
-    return createdAtDate;
+   const getFormattedDate = (dateString) => {
+    const createdAtDate = new Date(dateString);
+    
+    const options = {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric"
+    };
+  
+    const formattedDate = createdAtDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
   };
 
   return (
@@ -81,26 +98,25 @@ const Orders = () => {
         orders.map(order => {
             return <div key={order._id}> 
             <OrderTextContainer>
-              
-              <OrderTextInfo></OrderTextInfo>
               <OrderTextInfo style={{ color: "teal" }}>{order.status}</OrderTextInfo>
               <OrderTextInfo style={{ fontWeight: 300 }}>{order.address}</OrderTextInfo>
               <OrderTextInfo style={{ fontWeight: 300 }}>{getFormattedDate(order.createdAt)}</OrderTextInfo>
+              <OrderTextInfo>${order.amount}</OrderTextInfo>
             </OrderTextContainer>      
             <ProductContainer>
               {order.products.length > 0 ? (
                 order.products.map(product => {
                   return <div key ={product._id}>
-                    <ProductDeatils>
-                      <Link to={`/product/${product.productId}`}>
+                    <ProductContainerSingle>
+                      <Link to={`/product/${product._id}`}>
                         <Image src = {product.productImg}/>
                       </Link>
-                      <h1>{product.productTitle}</h1>
-                      <h1>x{product.quantity}</h1>
-                    </ProductDeatils>
+                      <ProductText>{product.productTitle}</ProductText>
+                      <ProductText style={{ fontWeight: 300, marginLeft: "10px" }}>x {product.quantity}</ProductText>
+                    </ProductContainerSingle>
                   </div>
                 })
-              ):(<div>NO PRODUCTS</div>)}
+              ):(<div>-</div>)}
                 
               
             </ProductContainer>
@@ -108,7 +124,7 @@ const Orders = () => {
 
             </div>
         })
-    ):(<h1>{orders.length}</h1>)}  
+    ):(<h1>No orders yet!</h1>)}  
     </OrderContainer>
     
     <Newsletter />

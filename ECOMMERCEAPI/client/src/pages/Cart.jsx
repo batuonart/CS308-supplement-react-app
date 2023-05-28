@@ -273,7 +273,9 @@ const Cart = () => {
                         {cart.products.map((product) => (
                             <Product>
                                 <ProductDetail>
-                                    <Image src={"https://productimages.hepsiburada.net/s/199/1500/110000169922427.jpg"} />
+                                    <Link to={`/product/${product._id}`}>
+                                        <Image src={product.img} />
+                                    </Link>
                                     <Details>
                                         <ProductName>
                                             <b>Product:</b> {product.title}
