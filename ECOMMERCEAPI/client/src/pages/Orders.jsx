@@ -18,19 +18,14 @@ const OrderTextContainer = styled.div`
     display: flex;
     flex-direction: column;
 `; 
-const OrderStatus = styled.div`
+const OrderTextInfo = styled.div`
     font-weight: 700;
     margin-left: 5px;
     font-size: 30px;
-    color:teal;
-`
-
-const OrderaAdress = styled.div`
-    margin-top: 10px;
-    font-weight: 500;
 `
 
 const ProductContainer = styled.div`
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -45,16 +40,13 @@ const ProductDeatils = styled.div`
 
 const PlainLine = styled.hr`
     margin: 30px;
+    color: teal;
 `
 
-const ImageLink = styled(Link)`
-  text-decoration: none;
-`;
 
 const Image = styled.img`
     width: 200px;
     height: 200px;
-    max-height: 200px;
     object-fit: contain;
 `
 
@@ -89,9 +81,11 @@ const Orders = () => {
         orders.map(order => {
             return <div key={order._id}> 
             <OrderTextContainer>
-              <OrderStatus>{order.status}</OrderStatus>
-              <h1>{order.address}</h1>
-              <h1>{getFormattedDate(order.createdAt)}</h1>
+              
+              <OrderTextInfo></OrderTextInfo>
+              <OrderTextInfo style={{ color: "teal" }}>{order.status}</OrderTextInfo>
+              <OrderTextInfo style={{ fontWeight: 300 }}>{order.address}</OrderTextInfo>
+              <OrderTextInfo style={{ fontWeight: 300 }}>{getFormattedDate(order.createdAt)}</OrderTextInfo>
             </OrderTextContainer>      
             <ProductContainer>
               {order.products.length > 0 ? (
