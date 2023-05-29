@@ -8,8 +8,6 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/apiCalls'
 
-
-
 const Container = styled.div`
     height: 60px;
     ${mobile({
@@ -141,6 +139,9 @@ const Navbar = () => {
                             <Link to="/">
                                 <ExitToAppOutlined />
                             </Link>
+                        </MenuItem>
+                        <MenuItem>
+                        
                         </MenuItem>
                         <MenuItem>
                             <ProfilePicture>
