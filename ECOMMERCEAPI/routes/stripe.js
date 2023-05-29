@@ -59,6 +59,18 @@ router.post("/payment", verifyToken, (req, res) => {
                     // });
 
                     // Create invoice items
+                    const invoice = await stripe.invoices.create({
+                        customer: customer.id,
+                        collection_method: 'send_invoice',
+                        days_until_due: 5,
+                        customer_address: currUser.address,
+                        currency: "usd",
+                        description: "Payment successful!",
+                        footer: "Thank you for choosing SUPPS",
+                        default_tax_rates: [], // add any tax rates here
+                        auto_advance: false
+                    });
+                    
                     for (let productSaved of savedOrder.products) {
                         // console.log("savedOrder.productSaved.product:", productSaved._id.toString())
                         let currProduct = await axios.get(`http://localhost:5000/api/products/find/${productSaved._id.toString()}`);
@@ -105,27 +117,19 @@ router.post("/payment", verifyToken, (req, res) => {
                         const invoiceItem = await stripe.invoiceItems.create({
                             customer: customer.id,
                             price: price.id,
+                            invoice: invoice.id
                         });
-                        console.log(invoiceItem)
+                        console.log("Invoice Item Is:", invoiceItem, '\n')
 
                         invoiceItems.push(invoiceItem);
                         // console.log(invoiceItem)
 
                     }
-                    console.log(invoiceItems)
+                    console.log("Invoice Items Are:", invoiceItems, '\n')
 
                     // await new Promise(resolve => setTimeout(resolve, 6000));
-                    const invoice = await stripe.invoices.create({
-                        customer: customer.id,
-                        collection_method: 'send_invoice',
-                        days_until_due: 5,
-                        customer_address: currUser.address,
-                        currency: "usd",
-                        description: "Payment successful!",
-                        footer: "Thank you for choosing SUPPS",
-                        default_tax_rates: [], // add any tax rates here
-                    });
-                    console.log(invoice)
+
+                    // console.log(invoice)
 
                     // const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
                     // const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
