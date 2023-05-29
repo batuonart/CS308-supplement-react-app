@@ -61,8 +61,8 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 })
 
-// GET ALL USERS, only admin can get user.
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+// !GET ALL USERS, only admin can get user. CHANGE TO VERIFYTOKENANDADMIN LATER
+router.get("/", async (req, res) => {
     const query = req.query.new;
 
     try {

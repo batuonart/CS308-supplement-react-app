@@ -106,9 +106,9 @@ const Orders = () => {
             <ProductContainer>
               {order.products.length > 0 ? (
                 order.products.map(product => {
-                  return <div key ={product._id}>
+                  return <div key ={product.productId}>
                     <ProductContainerSingle>
-                      <Link to={`/product/${product._id}`}>
+                      <Link to={`/product/${product.productId}`}>
                         <Image src = {product.productImg}/>
                       </Link>
                       <ProductText>{product.productTitle}</ProductText>

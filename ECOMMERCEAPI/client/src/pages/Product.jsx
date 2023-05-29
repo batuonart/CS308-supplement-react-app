@@ -47,7 +47,7 @@ const Desc = styled.p`
 `
 
 const Price = styled.span`
-    font-weight: 100;
+    font-weight: 700;
     font-size: 40px;
 `
 
@@ -180,7 +180,7 @@ const Product = () => {
 
     const handleClick = () => {
     //! change later
-        if (quantity > product.stockCount) {
+        if (quantity <= product.stockCount) {
             dispatch(addProduct({ product, quantity, selectedAroma, selectedSize }));
             setErrorMessage(''); // Reset the error message when the condition is met
         } 
@@ -251,10 +251,17 @@ const Product = () => {
                         <AmountButton onClick={increment}>
                             <Add />
                         </AmountButton>
-                    </AmountContainer>
-                    <Button onClick={handleClick}>Add To Cart</Button>
-                </AddContainer>
-                <ErrorTitle>{errorMessage}</ErrorTitle>
+                        </AmountContainer>
+                        
+                        
+                        {product.stockCount === 0 ? (
+                            <p>Sorry, the product is out of stock!</p>
+                        ) : (
+                            <Button onClick={handleClick} disabled={quantity > product.stockCount}>
+                                Add To Cart
+                            </Button>
+                        )}                </AddContainer>
+                    <ErrorTitle>{errorMessage}</ErrorTitle>
             </InfoContainer>
         </Wrapper>
         <Comments/>

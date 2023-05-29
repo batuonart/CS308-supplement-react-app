@@ -6,6 +6,7 @@ import Product from "./pages/Product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Orders from "./pages/Orders";
+import AdminPanel from "./pages/AdminPanel";
 
 import {
     BrowserRouter as Router,
@@ -31,6 +32,7 @@ const App = () => {
                 <Route path="/success" element={<Success />}></Route>
                 <Route path="/search" element={<Search />}></Route>
                 <Route path="/orders" element={<Orders />}></Route>
+                <Route path="/admin" element={<AdminPanel />}></Route>
 
             </Routes>
         </Router>

@@ -58,21 +58,10 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 })
 
 
-// GET USER ORDERS
-router.get("/find/:userId", async (req, res) => {
-    try {
-        // Not using findOne here because user can have more than one orders.
-        const orders = await Order.find({ userId: req.params.userId });
-        // Send everything but password. 
-        // Send user the access token
-        return res.status(200).json(orders);
-    } catch (err) {
-        return res.status(500).json(err);
-    }
-})
+
 
 // Get only user
-router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:userId", async (req, res) => {
     try {
         // Not using findOne here because user can have more than one orders.
         const orders = await Order.find({ userId: req.params.userId });
