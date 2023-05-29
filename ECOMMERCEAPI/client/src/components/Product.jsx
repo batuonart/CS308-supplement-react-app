@@ -27,6 +27,7 @@ const Info = styled.div`
 
 
 const Container = styled.div`
+
     flex: 1;
     margin: 5px;
     min-width: 280px;
@@ -75,6 +76,10 @@ const Icon = styled.div`
 const Title = styled.h1`
     color: white;
     font-weight: 800;
+    text-align: center;
+    
+    
+
 `
 
 
@@ -94,7 +99,7 @@ const Product = ( { item } ) => {
   return (
     <Container>
       <Circle />
-      <Image src={ "https://productimages.hepsiburada.net/s/199/1500/110000169922427.jpg" } />
+      <Image src={ item.img } />
       <Info>
         <Title>{item.title}</Title>
         {/*<Price>${item.price}</Price>  ADD IF NEEDED*/}

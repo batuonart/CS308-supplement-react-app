@@ -179,8 +179,8 @@ const Product = () => {
     let decrement = () => setQuantity( quantity > 1 ? quantity - 1 : 1);
 
     const handleClick = () => {
-    
-        if (quantity < product.rating) {
+    //! change later
+        if (quantity > product.stockCount) {
             dispatch(addProduct({ product, quantity, selectedAroma, selectedSize }));
             setErrorMessage(''); // Reset the error message when the condition is met
         } 
@@ -202,7 +202,7 @@ const Product = () => {
         <Announcement />
         <Wrapper>
             <ImgContainer>
-                <Image src="https://contents.mediadecathlon.com/p1960881/k$c3ab56961217a74264138e62cfab0177/sq/gainer.jpg?format=auto&f=800x0" />
+                <Image src= {product.img} />
             </ImgContainer>
             <InfoContainer>
                 <Title>{product.title}</Title>

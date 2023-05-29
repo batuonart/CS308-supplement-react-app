@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const CommentContainer = styled.div`
     margin-left: 30px;
-`; 
+`;
 const Rating = styled.div`
     font-weight: 700;
     font-size: 30px;
@@ -55,19 +55,19 @@ const Button = styled.button`
 const Comments = () => {
     //comments
     const location = useLocation();
-    const[comments,setComments] = useState([]);
-    const[userRating,setRating] = useState(0);
-    const[userDesc,setDesc] = useState("");
-    const id = location.pathname.split( "/" )[2] ;
+    const [comments, setComments] = useState([]);
+    const [userRating, setRating] = useState(0);
+    const [userDesc, setDesc] = useState("");
+    const id = location.pathname.split("/")[2];
 
-    
+
     useEffect(() => {
         const getProduct = async () => {
             try {
                 const commentData = await publicRequest.get("/comments/findbyproduct/" + id)
                 setComments(commentData.data)
             } catch (error) {
-                
+
             }
         };
         getProduct()
@@ -76,15 +76,15 @@ const Comments = () => {
 
 
     //ADD COMMENT
-    const handleRating = ( e ) => {
+    const handleRating = (e) => {
 
         setRating(e.target.value);
     }
-    const handleDesc = ( e ) => {
+    const handleDesc = (e) => {
 
         setDesc(e.target.value);
     }
-    const user = useSelector( state => state.user.currentUser );
+    const user = useSelector(state => state.user.currentUser);
 
     const addUserComment = async () => {
         let comment = {
@@ -92,53 +92,53 @@ const Comments = () => {
             usercomment: userDesc,
             productId: id,
             username: user.username,
-            userId : user._id,
+            userId: user._id,
         }
         await publicRequest.post("/comments/", comment)
     }
- 
- 
 
 
-  return (
-    
-    <CommentContainer>
+
+
+    return (
+
+        <CommentContainer>
             <CommentSubmit>
                 <h2>Add Comment</h2>
-                <hr/>
-                {user ? 
-                    <><Input placeholder="Rating" style={{width: "50px"}} onChange={ (e) => handleRating(e) }/>
-                    <Input placeholder="Text"style={{width: "500px"}} onChange={ (e) => handleDesc(e) }/>
-                    <Button onClick={() => {
-                    addUserComment();
-                    window.location.reload();
-                    }} style={{width: "100px"}}>SUBMIT</Button>
-                    </>:
+                <hr />
+                {user ?
+                    <><Input placeholder="Rating" style={{ width: "50px" }} onChange={(e) => handleRating(e)} />
+                        <Input placeholder="Text" style={{ width: "500px" }} onChange={(e) => handleDesc(e)} />
+                        <Button onClick={() => {
+                            addUserComment();
+                            window.location.reload();
+                        }} style={{ width: "100px" }}>SUBMIT</Button>
+                    </> :
                     <div>Please sign in first.</div>
 
 
                 }
-               
+
             </CommentSubmit>
-            <br/>
+            <br />
             <h2>Comments</h2>
             {comments.length > 0 ? (
                 comments.map(comment => {
-                    return <div key={comment.id}> 
-                    <CommentLine/>
-                    <Rating><StarOutlined/>{comment.rating}</Rating>
-                    <CommentName>{comment.userName} </CommentName>
-                    <CommentDesc> 
-                    {comment.isPassed === true ? (
-                    <div>{comment.userComment}</div>
-                    ) : (
-                    <div><i>Comment awaits approval</i></div>
-                    )}
-                    </CommentDesc></div>
+                    return <div key={comment.id}>
+                        <CommentLine />
+                        <Rating><StarOutlined />{comment.rating}</Rating>
+                        <CommentName>{comment.userName} </CommentName>
+                        <CommentDesc>
+                            {comment.isPassed === true ? (
+                                <div>{comment.userComment}</div>
+                            ) : (
+                                <div><i>Comment awaits approval</i></div>
+                            )}
+                        </CommentDesc></div>
                 })
-            ):(<div>No comments yet.</div>)}
+            ) : (<div>No comments yet.</div>)}
         </CommentContainer>
-  )
+    )
 }
 
 export default Comments
