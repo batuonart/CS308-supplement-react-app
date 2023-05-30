@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { userRequest } from "../requestMethod";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { clearProduct } from "../redux/productRedux";
 
 
 const Container = styled.div`
@@ -58,11 +59,12 @@ const Success = () => {
   //in Cart.jsx I sent data and cart. Please check that page for the changes.(in video it's only data)
   const data = location.state.stripeData;
   const cart = location.state.cart;
+  const dispatch = useDispatch();
 
   const currentUser = useSelector((state) => state.user.currentUser);
   const [orderId, setOrderId] = useState(null);
 
-  console.log( orderId );
+  
   useEffect(() => {
     const createOrder = async () => {
       try {
@@ -90,7 +92,7 @@ const Success = () => {
       <InfoContainer>
       </InfoContainer>
       <Link to={"/"}>
-        <Button>Go to Homepage</Button>
+        <Button onClick={ () => dispatch(clearProduct( )) }>Go to Homepage</Button>
       </Link>
     </Container>
 
