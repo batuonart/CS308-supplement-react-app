@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { userRequest } from "../requestMethod";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
