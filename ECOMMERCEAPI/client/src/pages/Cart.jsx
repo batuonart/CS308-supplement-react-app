@@ -6,7 +6,7 @@ import { Add, DeleteOutlineOutlined, DeleteOutlined, Remove } from '@material-ui
 import { mobile } from "../responsive";
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeProduct } from '../redux/productRedux';
+import { clearProduct, removeProduct } from '../redux/productRedux';
 import { Link } from 'react-router-dom';
 import StripeCheckout from 'react-stripe-checkout';
 import { useEffect } from 'react';
@@ -190,6 +190,24 @@ const AmountButton = styled.button`
     }
 `
 
+const WrapClear = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const ClearButton = styled.button`
+
+    border: none;
+    background-color: red;
+    cursor: pointer;
+    display: block;
+    margin-top: 3px;
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+
+`
+
 const DeleteButton = styled.button`
 
     border: none;
@@ -252,7 +270,7 @@ const Cart = () => {
 
     }, [address, id, token, cart, stripeToken, sum, navigate]);
 
-
+    console.log( cart.products )
     return (
         <Container>
             <Navbar />
@@ -260,14 +278,26 @@ const Cart = () => {
             <Wrapper>
                 <Title>YOUR BAG</Title>
                 <Top>
-                    <Link to={`/`}>
+                    { cart.products.length > 0 ?
+                        <WrapClear>
+                            <Link to={`/`}>
+                                <TopButton>CONTINUE SHOPPING</TopButton>
+                            </Link>
+                            <ClearButton onClick={() => dispatch(clearProduct())}>CLEAR CART</ClearButton>
+                        </WrapClear>
+                        :
+                        <Link to={`/`}>
                         <TopButton>CONTINUE SHOPPING</TopButton>
-                    </Link>
+                        </Link>
+                    }
+
                     <TopTexts>
                         <TopText>Shopping Bag({cart.products.length})</TopText>
                     </TopTexts>
-                    {user && <TopButton type='filled'>CHECKOUT NOW</TopButton>}
+                    {user && <TopButton type='filled'>CHECKOUT NOW</TopButton>} 
+                    
                 </Top>
+                
                 <Bottom>
                     <Info>
                         {cart.products.map((product) => (
