@@ -142,4 +142,22 @@ router.put("/addrating/:id", verifyToken, async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+
+//It is for finding aromas of an category
+router.get("/findaroma/:categories", async (req, res) => {
+    try {
+        const products = await Product.find({categories: req.params.categories})
+        const aromaArray=[]
+        for (product of products){
+            for(const aromaB of product.aroma){
+                if ((aromaArray.includes(aromaB.charAt(0).toUpperCase()+aromaB.slice(1)) === false)) 
+                { aromaArray.push(aromaB.charAt(0).toUpperCase()+aromaB.slice(1))}
+            }
+        }
+        return res.status(200).json(aromaArray);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
 module.exports = router;
