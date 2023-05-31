@@ -8,8 +8,17 @@ const OrderSchema = new mongoose.Schema(
                 productId: {
                     type: String
                 },
-                productTitle: {type: String},
-                productImg: {type: String},
+                productTitle: { type: String, required: true, unique: true },
+                productDesc: { type: String, required: true },
+                productImg: { type: String, required: true },
+                productCategories: { type: Array },
+                productSize: { type: String },
+                productPrice: { type: Number },
+                productAroma: { type: Array, required: true },
+                productRating: { type: Number, default: 0},
+                productRatingcount: { type: Number, default: 0},
+                productInstock: { type: Boolean, default: true },
+                stockCount: {type: Number, default: 0},
                 quantity: {
                     type: Number,
                     default: 1, //Default number of items to add to Order.

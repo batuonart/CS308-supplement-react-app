@@ -16,8 +16,15 @@ router.post("/register", async (req, res) => {
 
     try {
         const savedUser = await newUser.save();
+
+
+        const accessToken = jwt.sign({ 
+            id: savedUser._id, isAdmin: savedUser.isAdmin
+        }, process.env.JWT_SEC,
+           {expiresIn: "3d"} // User will have to login back after 3 days because the token will expire.
+        );
         // console.log(savedUser);
-        res.status(201).json(savedUser);
+        res.status(201).json({savedUser,accessToken});
         // 200 OK, 201 is SUCCESSFUL    LY ADDED
     } catch(err) {
         // We'll write 500 for user.
