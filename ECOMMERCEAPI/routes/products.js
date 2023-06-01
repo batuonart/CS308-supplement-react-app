@@ -160,4 +160,19 @@ router.get("/findaroma/:categories", async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+//It is for finding weight of an category
+router.get("/findsize/:categories", async (req, res) => {
+    try {
+        const products = await Product.find({categories: req.params.categories})
+        const sizeArray=[]
+        for (product of products){
+            if ((sizeArray.includes(product.size) === false)) 
+                { sizeArray.push(product.size)}
+        }
+        return res.status(200).json(sizeArray);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
 module.exports = router;

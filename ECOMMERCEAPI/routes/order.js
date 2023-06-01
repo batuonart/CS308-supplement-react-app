@@ -9,7 +9,29 @@ const Product = require("../models/Product");
 
 // CREATE CART
 router.post("/", verifyToken, async (req, res) => {
-    const newOrder = new Order(req.body);
+    var aa
+    var newProducts=[]
+
+    for(const product of req.body.products){
+        const updatedProduct = await Product.findOne({_id: product._id});
+        
+        var jsonNew ={
+            _id: product._id,
+            quantity: product.quantity,
+            productTitle: updatedProduct.title,
+            productImg: updatedProduct.img
+        }
+        
+        newProducts.push(jsonNew)
+    }
+    
+    const newOrder = new Order({
+        userId: req.body.userId,
+        products: newProducts,
+        amount: req.body.amount,
+        address: req.body.address,
+        status: req.body.status,
+    });
 
     try {
         const savedOrder = await newOrder.save();
