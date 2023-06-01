@@ -6,7 +6,7 @@ import UserList from '../components/UserList'
 
 
 const AdminPanel = () => (
-        <Admin dataProvider={restProvider("http://localhost:5000")}>
+        <Admin dataProvider={restProvider("http://localhost:3000")}>
             <Resource name="users" list={UserList} />
         </Admin>
 
