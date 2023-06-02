@@ -7,7 +7,7 @@ const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyTo
 // Here, we'll be using express router.
 
 // CREATE CART
-router.post("/", verifyTokenAndAuthorization, async (req, res) => {
+router.post("/", async (req, res) => {
     const newOrder = new Order(req.body);
     try {
         const savedOrder = await newOrder.save();

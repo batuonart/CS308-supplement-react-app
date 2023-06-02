@@ -224,6 +224,7 @@ const Cart = () => {
     useEffect(() => {
         const makeRequest = async () => {
             try {
+                console.log(cart)
                 const res = await userRequest.post("/checkout/payment", {
                     source: "tok_visa",
                     tokenID: stripeToken.id,
@@ -233,8 +234,7 @@ const Cart = () => {
                     userId: id,
                     products: cart
                 }, { headers: { 'token': `Bearer ${token}` } });
-                // console.log(cart);
-                navigate("../success", { state: { stripeData: res.data, products: cart } });
+                navigate("../success", { state: {amount: sum*100, products: cart.products  }});
             } catch (error) {
                 // console.log('Source:', "tok_visa");
                 // console.log('TokenID:', stripeToken.id);
