@@ -151,7 +151,6 @@ router.post("/payment", (req, res) => {
                     // );
                     const finalizedInvoice = await stripe.invoices.finalizeInvoice(invoice.id);
 
-                    // Send the invoice via email (to the customer's email address)
                     const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
 
                     console.log("sentInvoice:", sentInvoice);
@@ -162,7 +161,6 @@ router.post("/payment", (req, res) => {
 
                     return res.status(200).json({ stripeRes: sentInvoice, savedOrder: savedOrder, invoiceItems: invoiceItems });
                 } catch (err) {
-                    // console.log(err);
                     return res.status(500).json(err);
                 }
             }
