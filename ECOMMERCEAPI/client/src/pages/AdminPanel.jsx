@@ -1,16 +1,12 @@
 import * as React from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import restProvider from 'ra-data-simple-rest';
-import UserList from '../components/UserList'
-
+import dataProvider from '../dataProvider';
 
 
 const AdminPanel = () => (
-        <Admin dataProvider={restProvider("http://localhost:5000/api")}>
-            <Resource name="users" list={ListGuesser} />
-        </Admin>
-
-
+    <Admin dataProvider={dataProvider}>
+        <Resource name="users" list={ListGuesser} />
+    </Admin>
 );
 
 export default AdminPanel;

@@ -67,18 +67,14 @@ router.get("/", async (req, res) => {
     try {
       let users;
   
-      if (query) {
-        // Fetch all users that are recently registered.
-        users = await User.find().sort({ _id: -1 });
-      } else {
-        // Fetch all users.
+   
         users = await User.find();
-      }
+      
   
       // Send everything but the password.
       // Send the user the access token.
-      res.header('Content-Range','items 0-24/50');
-  
+      res.header('Content-Range', 'users 0-24/' + users.length);
+
       return res.status(200).json(users);
     } catch (err) {
       return res.status(500).json(err);
