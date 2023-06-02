@@ -7,7 +7,6 @@ import Register from "../pages/Register"
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../redux/apiCalls'
-import { AdminPanelSettings } from '@mui/icons-material'
 
 const Container = styled.div`
     height: 60px;
