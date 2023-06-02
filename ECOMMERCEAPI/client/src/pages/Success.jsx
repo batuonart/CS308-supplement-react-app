@@ -58,10 +58,10 @@ const Success = () => {
   //in Cart.jsx I sent data and cart. Please check that page for the changes.(in video it's only data)
   const data = location.state.stripeData;
   const cart = location.state.cart;
-
+  
   const currentUser = useSelector((state) => state.user.currentUser);
   const [orderId, setOrderId] = useState(null);
-
+  
   console.log( orderId );
   useEffect(() => {
     const createOrder = async () => {
@@ -80,12 +80,12 @@ const Success = () => {
     };
     createOrder();
   }, [cart, data, currentUser]);
-
+  // console.log("test is:", location.state.products);
   return (
     <Container>
       {orderId
         ? `Order has been created successfully. Your order number is ${orderId}`
-        : `Successfull. Your order is being prepared...`}
+        : `Successfull. Your order is being prepared...` }
 
       <InfoContainer>
       </InfoContainer>

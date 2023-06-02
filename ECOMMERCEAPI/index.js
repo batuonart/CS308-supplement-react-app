@@ -20,7 +20,8 @@ dotenv.config();
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Methods', 'token', 'Authentication']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Methods', 'token', 'Authentication'],
+    exposedHeaders: ['Content-Range']
 }));
 
 // Use mongoose to connnect to our Mango Cloud Database
