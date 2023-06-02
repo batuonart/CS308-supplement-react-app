@@ -36,6 +36,7 @@ mongoose.
         console.log("Test is successfull")
     });
 
+
 app.use(express.json());
 
 // Whenever we go to api/user, our app will use userRoute, which is located in routes/user
