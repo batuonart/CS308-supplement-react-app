@@ -61,22 +61,26 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 })
 
-// !GET ALL USERS, only admin can get user. CHANGE TO VERIFYTOKENANDADMIN LATER
 router.get("/", async (req, res) => {
     const query = req.query.new;
-
+  
     try {
-        // Fetch the last 5 users that are recently registered.
-        const users = query
-            ? await User.find().sort({ _id: -1 }).limit(5)
-            : await User.find()
-        // Send everything but password. 
-        // Send user the access token
-        return res.status(200).json(users);
+      let users;
+  
+   
+        users = await User.find();
+      
+  
+      // Send everything but the password.
+      // Send the user the access token.
+      res.header('Content-Range', 'users 0-24/' + users.length);
+
+      return res.status(200).json(users);
     } catch (err) {
-        return res.status(500).json(err);
+      return res.status(500).json(err);
     }
-})
+  });
+  
 
 // GET USER STATS, returns total number of users per month.
 router.get("/stats", verifyTokenAndAdmin, async (req, res) => {

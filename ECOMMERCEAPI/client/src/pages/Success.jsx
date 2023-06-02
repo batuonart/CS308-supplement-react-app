@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import { userRequest } from "../requestMethod";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -55,38 +55,36 @@ const Button = styled.button`
 const Success = () => {
 
   const location = useLocation();
-  //in Cart.jsx I sent data and cart. Please check that page for the changes.(in video it's only data)
-  const data = location.state.stripeData;
-  const cart = location.state.cart;
-
+  const { amount, products } = location.state || {};
+  const newProducts = products;
+  console.log(location.state);
   const currentUser = useSelector((state) => state.user.currentUser);
-  const [orderId, setOrderId] = useState(null);
 
-  console.log( orderId );
   useEffect(() => {
     const createOrder = async () => {
       try {
-        const res = await userRequest.post("/orders", {
+        console.log(newProducts);
+        const res = await userRequest.post("/orders/", {
           userId: currentUser._id,
-          products: cart.products.map((item) => ({
+          products: newProducts.map((item) => ({
             productId: item._id,
-            quantity: item._quantity,
+            quantity: item.quantity,
+            productTitle: item.title,
+            productImg: item.img
           })),
-          amount: cart.total,
-          address: data.billing_details.address,
+          amount: amount,
+          address: currentUser.address
         });
-        setOrderId(res.data._id);
-      } catch { }
+      } catch (error){ 
+        console.error(error);
+      }
     };
     createOrder();
-  }, [cart, data, currentUser]);
+  }, [products,amount, currentUser]);
 
   return (
     <Container>
-      {orderId
-        ? `Order has been created successfully. Your order number is ${orderId}`
-        : `Successfull. Your order is being prepared...`}
-
+      success
       <InfoContainer>
       </InfoContainer>
       <Link to={"/"}>

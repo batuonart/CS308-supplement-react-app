@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Search, ShoppingCartOutlined, ExitToAppOutlined, AccountCircle } from '@material-ui/icons'
+import { Search, ShoppingCartOutlined, ExitToAppOutlined, AccountCircle, Settings } from '@material-ui/icons'
 import { Badge, Menu } from '@material-ui/core'
 import { mobile } from "../responsive"
 import Register from "../pages/Register"
@@ -140,9 +140,20 @@ const Navbar = () => {
                                 <ExitToAppOutlined />
                             </Link>
                         </MenuItem>
-                        <MenuItem>
                         
-                        </MenuItem>
+                            { user.isAdmin ?
+                            <>
+                            <MenuItem>
+                                <ProfilePicture>
+                                    <Link to="/admin">
+                                    <Settings style={{color: "black", fontSize: 30}}/>
+                                    </Link>
+                                </ProfilePicture>
+                                </MenuItem>
+                            </>
+                            :<></> }
+                            
+                        
                         <MenuItem>
                             <ProfilePicture>
                                 <Link to="/orders">

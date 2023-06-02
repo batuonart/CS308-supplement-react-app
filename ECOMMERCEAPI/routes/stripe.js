@@ -4,7 +4,7 @@ const Order = require("../models/Order"); // import your Order model
 const axios = require('axios');
 const { verifyToken } = require("./verifyToken");
 
-router.post("/payment", verifyToken, (req, res) => {
+router.post("/payment", (req, res) => {
     // console.log(req.body, "- stripe.js");
     // console.log(req.body.products.products, " - req.body.products");
     // console.log("-------------------------------");
@@ -30,7 +30,7 @@ router.post("/payment", verifyToken, (req, res) => {
                     // add any other fields you need
                 });
                 try {
-                    const savedOrder = await newOrder.save();
+                    const savedOrder = newOrder;
                     let currUser = await axios.get(`http://localhost:5000/api/users/find/${req.body.userId}`);
                     // console.log("currUser:", currUser);
                     // console.log("savedOrder:", savedOrder);
