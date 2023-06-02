@@ -80,7 +80,7 @@ const Success = () => {
       }
     };
     createOrder();
-  }, [products,amount, currentUser]);
+  }, [newProducts, products,amount, currentUser]);
 
   return (
     <Container>
