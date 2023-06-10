@@ -40,7 +40,8 @@ router.get("/find/:id", async (req, res) => {
         return res.status(500).json(err);
     }
 })
-// GET PRODUCT, users and admins can reach specific product data.
+
+//GET FOR ADMIN PANEL
 router.get("/:id", async (req, res) => {
     try {
         const product = await Product.findById(req.params.id)

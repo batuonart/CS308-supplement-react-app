@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE cart
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
             $set: req.body
@@ -73,11 +73,26 @@ router.get("/find/:userId", async (req, res) => {
     }
 })
 
+
+//GET USER FOR ADMIN PANEL
+router.get("/:id", async (req, res) => {
+    try {
+        const orders = await Order.find({ _id: req.params.id });
+
+ 
+        return res.status(200).json(orders);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
 // GET ALL, View all carts of all users.
 router.get("/", async (req, res) => {
     try {
         // Return ALL carts
         const orders = await Order.find();
+        res.header('Content-Range', 'orders 0-24/319');
+
         return res.status(200).json(orders);
     } catch (err) {
         return res.status(500).json(err);
