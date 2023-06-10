@@ -94,6 +94,7 @@ const AddContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     ${mobile({ width: "100%" })};
+
 `
 
 const AmountContainer = styled.div`
@@ -143,6 +144,13 @@ const ErrorTitle = styled.h2`
     margin: 20px 0;
     color: red;
     display: flex;
+`
+const StockButton = styled.div`
+    margin-left: 20px;
+`
+const StockAmount = styled.div`
+    margin-left: 20px;
+
 `
 
 const Product = () => {
@@ -253,14 +261,17 @@ const Product = () => {
                         </AmountButton>
                         </AmountContainer>
                         
-                        
-                        {product.stockCount === 0 ? (
-                            <p>Sorry, the product is out of stock!</p>
-                        ) : (
-                            <Button onClick={handleClick} disabled={quantity > product.stockCount}>
-                                Add To Cart
-                            </Button>
-                        )}                </AddContainer>
+                            <StockAmount>Stock: {product.stockCount}</StockAmount>
+                            <StockButton>
+                                {product.stockCount === 0 ? (
+                                    <p>Sorry, the product is out of stock!</p>
+                                ) : (
+                                    <Button onClick={handleClick} disabled={quantity > product.stockCount}>
+                                        Add To Cart
+                                    </Button>
+                                )} 
+                            </StockButton>                            
+                                       </AddContainer>
                     <ErrorTitle>{errorMessage}</ErrorTitle>
             </InfoContainer>
         </Wrapper>
