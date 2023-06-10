@@ -10,8 +10,12 @@ const ProductSchema = new mongoose.Schema({
     aroma: { type: Array, required: true },
     rating: { type: Number, default: 0},
     ratingcount: { type: Number, default: 0},
+    totalrating: { type: Number, default: 0},
     inStock: { type: Boolean, default: true },
     stockCount: {type: Number, default: 0},
+    modelN:{ type: String },
+    warrantyStatus:{ type: String },
+    distributorInfo: { type: String }
 },
     { timestamps: true } //Auto create timestams
 );

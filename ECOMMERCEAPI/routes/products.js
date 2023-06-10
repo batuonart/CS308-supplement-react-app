@@ -161,6 +161,18 @@ router.get("/findaroma/:categories", async (req, res) => {
     }
 })
 
+//It is for sorting of an category
+router.get("/sort/:categories", async (req, res) => {
+    let sortType = req.body.sortType
+    let sortParam = req.body.sortParam
+    try {
+        const products = await Product.find({categories: req.params.categories}).sort({sortParam:sortType})
+        return res.status(200).json(products);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
 //It is for finding weight of an category
 router.get("/findsize/:categories", async (req, res) => {
     try {
