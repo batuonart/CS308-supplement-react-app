@@ -1,5 +1,5 @@
 const Product = require("../models/Product");
-const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin, verifyTokenAndSalesManager } = require("./verifyToken");
 
 // Here, we'll be using express router.
 const router = require("express").Router();
@@ -121,5 +121,34 @@ router.put("/:id", verifyToken, async (req, res) => {
     }
 })
 
+// SET DISCOUNT RATE
+router.put("/set-discount/:id", verifyTokenAndSalesManager, async (req, res) => {
+    try {
+        const discountRate = req.body.discountRate;
+        if (discountRate < 0 || discountRate > 1) {
+            return res.status(400).json("Invalid discount rate. It should be between 0 and 1.");
+        }
+
+        // Fetch the current product
+        const product = await Product.findById(req.params.id);
+
+        // Calculate the new price
+        const newPrice = product.price * (1 - discountRate);
+
+        // Update the product with the new discount rate and price
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+            $set: {
+                discountRate: 1 - discountRate,
+                price: newPrice
+            }
+        },
+            { new: true }
+        );
+
+        return res.status(200).json(updatedProduct);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+});
 
 module.exports = router;

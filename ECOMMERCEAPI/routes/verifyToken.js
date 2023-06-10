@@ -48,7 +48,9 @@ const verifyTokenAndProductManager = (req, res, next) => {
 
 const verifyTokenAndSalesManager = (req, res, next) => {
     verifyToken(req, res, () => {
-        if (req.user.Salesmanager) {
+        console.log("User object:", req.user); // Add this line to log the user object
+        console.log("isSalesManager:", req.user.isSalesManager); // Add this line to log the isSalesManager property
+        if (req.user.isSalesManager) {
             next();
         } else {
             return res.status(403).json("You are not allowed to do that!")
