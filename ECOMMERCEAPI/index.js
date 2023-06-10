@@ -17,11 +17,11 @@ dotenv.config();
 
 // Enable CORS and set headers
 app.use(cors({
-    origin: '*', // You can change this to a specific origin or an array of allowed origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Authentication','Range'],
-    exposedHeaders: ['Content-Range'], // Expose the Content-Range header
-  }));
+  origin: '*', // You can change this to a specific origin or an array of allowed origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Authentication','Range'],
+  exposedHeaders: ['Content-Range'], // Expose the Content-Range header
+}));
 
 // Use mongoose to connect to our Mongo Cloud Database
 mongoose
