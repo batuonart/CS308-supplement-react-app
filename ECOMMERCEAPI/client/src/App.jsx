@@ -6,7 +6,6 @@ import Product from "./pages/Product";
 import ProductList from "./pages/ProductList";
 import Register from "./pages/Register";
 import Orders from "./pages/Orders";
-import AdminPanel from "./pages/AdminPanel";
 
 import {
     BrowserRouter as Router,
@@ -16,6 +15,8 @@ import {
 } from "react-router-dom";
 import Success from "./pages/Success";
 import Search from "./pages/Search";
+import ProductPanel from "./pages/ProductPanel";
+import SalesPanel from "./pages/SalesPanel";
 
 const App = () => {
 
@@ -32,7 +33,9 @@ const App = () => {
                 <Route path="/success" element={<Success />}></Route>
                 <Route path="/search" element={<Search />}></Route>
                 <Route path="/orders" element={<Orders />}></Route>
-                <Route path="/admin/*" element={<AdminPanel />}></Route>
+                <Route path="/productmanager" element={<ProductPanel />}></Route>
+                <Route path="/salesmanager" element={<SalesPanel />}></Route>
+
 
             </Routes>
         </Router>

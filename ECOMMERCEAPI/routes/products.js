@@ -110,31 +110,6 @@ router.get("/findbydesc/:desc", async (req, res) => {
     }
 })
 
-router.put("/products/:id/decrease-stock", async (req, res) => {
-    const { id } = req.params;
-    const { amount } = req.body;
-  
-    try {
-      // Find the product by ID
-      const product = await Product.findById(id);
-  
-      // Check if the product exists
-      if (!product) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-  
-      // Decrease the stock count
-      product.stockCount -= amount;
-  
-      // Save the updated product
-      await product.save();
-  
-      return res.status(200).json({ message: "Stock count updated successfully" });
-    } catch (error) {
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  });
-
 
 //Using $regex to find name by all. Ex: Finding Banana Protein Powder by Banana, protein ...
 router.get("/findbyall/:all", async (req, res) => {
