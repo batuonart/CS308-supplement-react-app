@@ -1,12 +1,15 @@
 const router = require("express").Router();
 
 const Comment = require("../models/Comment");
+const Product = require('../models/Product'); // replace with the actual path to your product model
+
+const mongoose = require('mongoose');
+
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 
 //ADD COMMENT
 router.post("/", async (req, res) => {
-    const newComment
- = new Comment({
+    const newComment = new Comment({
         userId: req.body.userId,
         productId: req.body.productId,
         userName: req.body.username,
@@ -16,11 +19,13 @@ router.post("/", async (req, res) => {
 
     try {
         const savedComment = await newComment.save();
+        console.log("Rating added is:",req.body.rating)
+        // after a comment is added, update the product rating
+        await updateProductRating(req.body.productId);
         return res.status(200).json(savedComment);
     } catch (err) {
         return res.status(500).json(err);
     }
-
 });
 
 //DELETE COMMENT
@@ -79,4 +84,26 @@ router.get("/findbyproduct/:productId", async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+async function updateProductRating(productId) {
+    try {
+        console.log("Inside update")
+        const avgRating = await Comment.aggregate([
+            { $match: { productId: productId } },
+            { $group: { _id: "$productId", avgRating: { $avg: "$rating" } } },
+        ]);
+        console.log("avgRating:", avgRating)
+        
+        if (avgRating.length > 0) {
+            await Product.findByIdAndUpdate(productId, { rating: avgRating[0].avgRating, ratingcount: avgRating.length });
+        } else {
+            // handle the case where there are no comments for a given product
+            await Product.findByIdAndUpdate(productId, { rating: 0, ratingcount: 0 });
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
 module.exports = router;
