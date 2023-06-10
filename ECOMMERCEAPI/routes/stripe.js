@@ -198,7 +198,14 @@ router.post("/payment", verifyToken, (req, res) => {
                     const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
                     console.log("sentInvoice:", sentInvoice)
                     sendInvoiceEmail(sentInvoice.invoice_pdf, currUser.email);
-
+                    try {
+                        await Order.findByIdAndUpdate(savedOrder._id, {
+                            invoiceLink: sentInvoice.invoice_pdf
+                        });
+                    } catch (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'There was a problem updating the order with the invoice link' });
+                    }
                     // const paymentIntent = await stripe.paymentIntents.create({
                     //     amount: sum,
                     //     currency: 'usd',
