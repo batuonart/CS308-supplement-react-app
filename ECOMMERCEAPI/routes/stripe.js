@@ -196,7 +196,7 @@ router.post("/payment", verifyToken, (req, res) => {
                         });
                     }
                     const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
-
+                    console.log("sentInvoice:", sentInvoice)
                     sendInvoiceEmail(sentInvoice.invoice_pdf, currUser.email);
 
                     // const paymentIntent = await stripe.paymentIntents.create({
