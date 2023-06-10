@@ -9,7 +9,7 @@ import OrderList from '../lists/order/OrderList'
 import OrderEdit from '../lists/order/OrderEdit'
 import CommentList from '../lists/comment/CommentList'
 import CommentEdit from '../lists/comment/CommentEdit'
-
+import Navbar from '../components/Navbar';
 
 
 
@@ -17,7 +17,9 @@ import CommentEdit from '../lists/comment/CommentEdit'
 
 
 const AdminPanel = () => (
+    
     <Admin dataProvider={dataProvider}>
+        <Navbar/>
         <Resource name="users" list={UserList} />
         <Resource name="products" list={ProductList} create={ProductCreate} edit={ProductEdit}/>
         <Resource name="orders" list={OrderList} edit={OrderEdit}/>
