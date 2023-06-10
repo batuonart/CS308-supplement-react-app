@@ -1,5 +1,5 @@
 import React from 'react'
-import {Edit, SimpleForm, TextInput, DateInput} from 'react-admin'
+import {Edit, SimpleForm, TextInput, DateInput, BooleanInput} from 'react-admin'
 
 const CommentEdit = (props) => {
   return (
@@ -7,11 +7,7 @@ const CommentEdit = (props) => {
     <Edit title= 'Edit Product' {...props}>
         <SimpleForm>
             <TextInput disabled source='_id'/>
-            <TextInput source='title'/>
-            <TextInput multiline source='desc'/>
-            <TextInput source='img'/>
-            <TextInput source='price'/>
-            <TextInput source='stockCount'/>
+            <BooleanInput label='Verified' source="isPassed" />
             <DateInput label='Created' source='createdAt'/>
         </SimpleForm>
     </Edit>

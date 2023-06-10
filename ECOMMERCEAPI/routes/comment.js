@@ -43,7 +43,7 @@ router.get("/find/:id", verifyToken, async (req, res) => {
 })
 
 // UPDATE Comment // Will be used for Modifying Comments
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const updatedComment = await Comment.findByIdAndUpdate(req.params.id, {
             $set: req.body
@@ -61,8 +61,9 @@ router.put("/:id", verifyToken, async (req, res) => {
 router.get("/", async (req, res) => {
     try {
         // Return ALL Comments
-        const Comments = await Comment.find();
-        return res.status(200).json(Comments);
+        const comments = await Comment.find();
+        res.header('Content-Range', 'comments 0-24/319');
+        return res.status(200).json(comments);
     } catch (err) {
         return res.status(500).json(err);
     }
@@ -79,4 +80,16 @@ router.get("/findbyproduct/:productId", async (req, res) => {
         return res.status(500).json(err);
     }
 })
+
+router.get("/:id", async (req, res) => {
+    try {
+        const orders = await Comment.find({ _id: req.params.id });
+
+ 
+        return res.status(200).json(orders);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
 module.exports = router;
