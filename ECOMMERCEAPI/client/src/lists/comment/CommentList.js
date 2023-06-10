@@ -8,6 +8,7 @@ const CommentList = (props) => {
             <TextField source='productId'/>
             <TextField source='userName'/>
             <TextField source='userComment'/>
+            <TextField source='rating'/>
             <BooleanField source='isPassed'/>
             <DateField source='createdAt'/>
             <EditButton basePath='/users'/>
