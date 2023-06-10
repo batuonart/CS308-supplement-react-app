@@ -1,8 +1,5 @@
 // Import express library
 const express = require('express');
-
-// Initialize application
-const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoute = require("./routes/user");
@@ -17,24 +14,15 @@ const cors = require("cors");
 
 dotenv.config();
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Methods', 'token', 'Authentication'],
-    exposedHeaders: ['Content-Range']
-}));
+const app = express();
 
-// Use mongoose to connnect to our Mango Cloud Database
-mongoose.
-    connect(process.env.MONGO_URL)
-    .then(() => console.log("DBConnection successful!"))
-    .catch((err) => {
-        console.log(err) 
-    });
-
-    app.get("/api/test", () => {
-        console.log("Test is successfull")
-    });
+// Use mongoose to connect to our Mongo Cloud Database
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("DB Connection successful!"))
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.use(express.json());
 
