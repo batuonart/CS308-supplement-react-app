@@ -24,8 +24,8 @@ const productSlice = createSlice({
     },
     removeProduct: (state, action) => {
       
-      const { productID } = action.payload;
-      state.products = state.products.filter((item) => item.productID !== productID);
+      const productID  = action.payload;
+      state.products = state.products.filter((item) => item._id !== productID );
     },
     updateProduct: (state, action) => {
       const { product } = action.payload;
