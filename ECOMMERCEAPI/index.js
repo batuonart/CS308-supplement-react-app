@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRoute = require("./routes/user");
@@ -13,7 +14,14 @@ const cors = require("cors");
 
 dotenv.config();
 
-const app = express();
+
+// Enable CORS and set headers
+app.use(cors({
+    origin: '*', // You can change this to a specific origin or an array of allowed origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Authentication','Range'],
+    exposedHeaders: ['Content-Range'], // Expose the Content-Range header
+  }));
 
 // Use mongoose to connect to our Mongo Cloud Database
 mongoose
@@ -23,15 +31,13 @@ mongoose
     console.log(err);
   });
 
+  app.get("/api/test", () => {
+    console.log("Test is successfull")
+});
+
+
 app.use(express.json());
 
-// Enable CORS and set headers
-app.use(cors({
-  origin: '*', // You can change this to a specific origin or an array of allowed origins
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'token', 'Authentication','Range'],
-  exposedHeaders: ['Content-Range'], // Expose the Content-Range header
-}));
 
 // Define your routes
 app.use("/api/auth", authRoute);

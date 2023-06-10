@@ -5,7 +5,7 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 const router = require("express").Router();
 
 // CREATE product
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
+router.post("/", async (req, res) => {
     const newProduct = new Product(req.body);
 
     try {
@@ -18,7 +18,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 // DELETE product
-router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         await Product.findByIdAndDelete(req.params.id)
         return res.status(200).json("Product has been deleted successfully");
@@ -34,11 +34,25 @@ router.get("/find/:id", async (req, res) => {
         const product = await Product.findById(req.params.id)
         // Send everything but password. 
         // Send user the access token
+        res.header('Content-Range', 'products 0-24/319');
         return res.status(200).json(product);
     } catch (err) {
         return res.status(500).json(err);
     }
 })
+// GET PRODUCT, users and admins can reach specific product data.
+router.get("/:id", async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id)
+        // Send everything but password. 
+        // Send user the access token
+        res.header('Content-Range', 'products 0-24/319');
+        return res.status(200).json(product);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
 
 // GET ALL USERS, everyone can get all products.
 router.get("/", async (req, res) => {
@@ -62,6 +76,8 @@ router.get("/", async (req, res) => {
             // Get all products
             products = await Product.find();
         }
+        products = await Product.find();
+        res.header('Content-Range', 'products 0-24/319');
 
         return res.status(200).json(products);
     } catch (err) {
@@ -108,7 +124,7 @@ router.get("/findbyall/:all", async (req, res) => {
 
 
 // UPDATE Product
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
             $set: req.body
