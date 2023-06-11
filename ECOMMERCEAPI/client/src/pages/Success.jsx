@@ -5,23 +5,57 @@ import { userRequest } from "../requestMethod";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { clearProduct } from "../redux/productRedux";
+import Navbar from "../components/Navbar";
+import Announcement from "../components/Announcement";
+import Newsletter from "../components/Newsletter";
+import Footer from "../components/Footer";
+import { keyframes } from 'styled-components';
+
+const fadeInOutAnimation = keyframes`
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: #ffaa00;
+    }
+    100% {
+        background-color: transparent;
+    }
+`;
 
 
 const Container = styled.div`
+  
+
+`
+
+
+const Wrapper = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+  animation: ${fadeInOutAnimation} 4s ease-in-out infinite;
 
+`
+const SuccessPart = styled.div `
+  display: flex;
+  font-weight: bold;
+  color: #fcf5f5;
+  background-color: teal;
+  font-size: 38px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 30px;
+  border: 2px #0adeff;
+`
 const InfoContainer = styled.div`
 
   border: 1px solid gainsboro;
   border-radius: 5px;
   background-color: black;
-  height: 20%;
-  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,14 +75,15 @@ const InfoContainer = styled.div`
 const Button = styled.button`
     color: black;
     padding: 15px;
-    margin-top: 5px;
+    margin-top: 20px;
     border-radius: 5px;
-    background-color: transparent;
     font-size: 14px;
     font-weight: 600;
+    text-decoration: underline;
 
     &:hover {
-      background-color: silver;
+      background-color: teal;
+      color: white;
       cursor: pointer;
     }
 `
@@ -91,12 +126,13 @@ const Success = () => {
 
   return (
     <Container>
-      success
-      <InfoContainer>
-      </InfoContainer>
-      <Link to={"/"}>
-        <Button onClick={ () => dispatch(clearProduct( )) }>Go to Homepage</Button>
-      </Link>
+      <Navbar/>
+      <Announcement/>
+      <Wrapper>
+        <SuccessPart>You have succesfully bought the products!</SuccessPart>
+      </Wrapper>
+      <Newsletter/>
+      <Footer/>
     </Container>
 
   );

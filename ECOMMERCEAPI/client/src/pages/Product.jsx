@@ -34,28 +34,63 @@ const Image = styled.img`
 
 const InfoContainer = styled.div`
     flex: 1;
-    padding: 0 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 50px;
     ${mobile({ padding: "10px" })};
 `
 
 const Title = styled.h1`
-    font-weight: 200;
+    font-weight: 'bold';
+    color: black;
+    font-size: 32px;
+    text-align: left;
+    padding-right: 50px;  
 `
-
+const DescTitle = styled.h1`
+    font-weight: 'bold';
+    color: black;
+    font-size: 32px;
+    text-align: left;
+    padding-right: 50px;  
+    padding-left: 30px;
+`
 const Desc = styled.p`
     margin: 20px 0;
+    max-height: 120px; 
+    overflow-y: auto; 
+    padding: 0 30px;
+    font-size: 16px; 
+    line-height: 1.5; 
+
+    &::-webkit-scrollbar {
+        width: 8px; /* Set width of the scrollbar */
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #888; /* Set the scroll handle color */
+        border-radius: 4px; /* Optionally, add rounded corners to the scroll handle */
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scroll handle on hover */
+    }
 `
 
 const Price = styled.span`
     font-weight: 700;
     font-size: 40px;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    padding-top: 50px;
+    padding-bottom: 50px;
 `
 
 const FilterContainer = styled.div`
-    width: 50%;
     margin: 30px 0px;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
+    text-align: left;
+    gap: 20px;
     ${mobile({ width: "100%" })};
 `
 
@@ -65,8 +100,8 @@ const Filter = styled.div`
 `
 
 const FilterTitle = styled.span`
-    font-size: 20px;
-    font-weight: 200;
+    font-size: 24px;
+    font-weight: bald;
 `
 
 const FilterColor = styled.div`
@@ -89,10 +124,11 @@ const FilterSize = styled.select`
 const FilterSizeOption = styled.option``
 
 const AddContainer = styled.div`
-    width: 50%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
+    gap: 40px;
+    padding-right: 60px;
     ${mobile({ width: "100%" })};
 
 `
@@ -120,10 +156,12 @@ const Button = styled.button`
     border: 2px solid teal;
     background-color: white;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 800;
+    color: #5c5c5c;
 
     &:hover {
-        background-color: #f8f4f4;
+        background-color: teal;
+        color: white;
     }
 `
 
@@ -214,7 +252,7 @@ const Product = () => {
             </ImgContainer>
             <InfoContainer>
                 <Title>{product.title}</Title>
-                <Desc>{product.desc}</Desc>
+                
                 <Price>${product.price}</Price>
                 <FilterContainer>
                     <Filter>
@@ -259,22 +297,23 @@ const Product = () => {
                         <AmountButton onClick={increment}>
                             <Add />
                         </AmountButton>
-                        </AmountContainer>
-                        
-                            <StockAmount>Stock: {product.stockCount}</StockAmount>
-                            <StockButton>
-                                {product.stockCount === 0 ? (
-                                    <p>Sorry, the product is out of stock!</p>
+                    </AmountContainer>
+                        <StockButton>
+                            {product.stockCount === 0 ? (
+                                <p>Sorry, the product is out of stock!</p>
                                 ) : (
                                     <Button onClick={handleClick} disabled={quantity > product.stockCount}>
-                                        Add To Cart
-                                    </Button>
-                                )} 
-                            </StockButton>                            
-                                       </AddContainer>
+                                    Add To Cart
+                                </Button>
+                            )} 
+                        </StockButton>                              
+                        <StockAmount>Stock: {product.stockCount}</StockAmount>
+                </AddContainer>
                     <ErrorTitle>{errorMessage}</ErrorTitle>
             </InfoContainer>
         </Wrapper>
+        <DescTitle>Description:</DescTitle>
+        <Desc>{product.desc}</Desc>
         <Comments/>
         <Newsletter />
         <Footer />
