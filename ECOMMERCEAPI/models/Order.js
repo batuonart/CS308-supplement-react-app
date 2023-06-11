@@ -5,7 +5,9 @@ const OrderSchema = new mongoose.Schema(
         userId: { type: String, required: true },
         products: [
             {
-                productId: {type: String},
+                productId: {
+                    type: String
+                },
                 productTitle: {type: String},
                 productImg: {type: String},
                 quantity: {type: Number,default: 1}
@@ -19,4 +21,4 @@ const OrderSchema = new mongoose.Schema(
     { timestamps: true } //Auto create timestams
 );
 
-module.exports = mongoose.model("Order", OrderSchema)
+module.exports = mongoose.model("Order", OrderSchema)

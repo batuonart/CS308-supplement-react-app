@@ -11,6 +11,7 @@ const ordersRoute = require("./routes/order");
 const stripeRoute = require("./routes/stripe");
 const commentRoute = require("./routes/comment");
 const adressRoute = require("./routes/adress");
+const returnlRoute = require("./routes/returnL");
 const cors = require("cors");
 
 dotenv.config();
@@ -44,6 +45,7 @@ app.use("/api/orders", ordersRoute);
 app.use("/api/comments", commentRoute); 
 app.use("/api/adresses", adressRoute); 
 app.use("/api/checkout", stripeRoute); 
+app.use("/api/returnlists", returnlRoute); 
 app.use(cors());
 
 

@@ -1,14 +1,38 @@
 const router = require("express").Router();
 
 const Order = require("../models/Order");
-// const Cart = require("../models/Cart");
-const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+const Cart = require("../models/Cart");
+const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
+const Product = require("../models/Product");
 
 // Here, we'll be using express router.
 
 // CREATE CART
-router.post("/", async (req, res) => {
-    const newOrder = new Order(req.body);
+router.post("/", verifyToken, async (req, res) => {
+
+    var newProducts=[]
+
+    for(const product of req.body.products){
+        const updatedProduct = await Product.findOne({_id: product._id});
+        
+        var jsonNew ={
+            _id: product._id,
+            quantity: product.quantity,
+            productTitle: updatedProduct.title,
+            productImg: updatedProduct.img
+        }
+        
+        newProducts.push(jsonNew)
+    }
+    
+    const newOrder = new Order({
+        userId: req.body.userId,
+        products: newProducts,
+        amount: req.body.amount,
+        address: req.body.address,
+        status: req.body.status,
+    });
+
     try {
         const savedOrder = await newOrder.save();
         return res.status(200).json(savedOrder);
@@ -128,4 +152,32 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
       }
 });
 
+
+// Convert order products
+router.put("/convert/:id", verifyTokenAndAdmin, async (req, res) => {
+    var newProducts=[]
+    try {
+        const order = await Order.findOne({_id: req.params.id});
+        for(const product of order.products){
+            const updatedProduct = await Product.findOne({_id: product._id});
+            var jsonNew ={
+                _id: product._id,
+                quantity: product.quantity,
+                productTitle: updatedProduct.title,
+                productImg: updatedProduct.img
+            }
+            newProducts.push(jsonNew)
+        }
+
+        const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
+            products: newProducts
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedOrder);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+
+})
 module.exports = router
