@@ -14,8 +14,7 @@ const CartSchema = new mongoose.Schema(
                 type: Number,
                 default: 1, //Default number of items to add to Order.
             }
-        },
-
+        }
     ],
 
 },

@@ -145,13 +145,16 @@ const ErrorTitle = styled.h2`
     color: red;
     display: flex;
 `
-const StockButton = styled.div`
-    margin-left: 20px;
-`
-const StockAmount = styled.div`
-    margin-left: 20px;
+const RatingContainer = styled.div`
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+`;
 
-`
+const Rating = styled.div`
+    margin-left: 10px;
+`;
+
 
 const Product = () => {
 
@@ -216,6 +219,12 @@ const Product = () => {
                 <Title>{product.title}</Title>
                 <Desc>{product.desc}</Desc>
                 <Price>${product.price}</Price>
+                <RatingContainer>
+                    <StarOutlined /> 
+                    <Rating>
+                        {product.rating ? product.rating.toFixed(2) : "-"}
+                    </Rating>
+                </RatingContainer>
                 <FilterContainer>
                     <Filter>
                         <FilterTitle>Flavor</FilterTitle>

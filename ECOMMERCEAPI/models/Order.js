@@ -8,15 +8,21 @@ const OrderSchema = new mongoose.Schema(
                 productId: {
                     type: String
                 },
-                productTitle: {type: String},
-                productImg: {type: String},
-                quantity: {type: Number,default: 1}
+                productTitle: { type: String },
+                productImg: { type: String },
+                quantity: {
+                    type: Number,
+                    default: 1, //Default number of items to add to Order.
+                }
             },
 
         ],
         amount: { type: Number, required: true },
-        address: { type: String, required: true },
-        status: {type:String, default:"Pending..."},
+        address: { type: Object, required: true },
+        status: { type: String, default: "Pending..." },
+        invoiceLink: { type: String },
+        orderChargeId: { type: String, default:"Charge Id Not set..." }
+
     },
     { timestamps: true } //Auto create timestams
 );

@@ -13,9 +13,7 @@ const ProductSchema = new mongoose.Schema({
     totalrating: { type: Number, default: 0},
     inStock: { type: Boolean, default: true },
     stockCount: {type: Number, default: 0},
-    modelN:{ type: String },
-    warrantyStatus:{ type: String },
-    distributorInfo: { type: String }
+    discountRate: {type: Number, default: 1}
 },
     { timestamps: true } //Auto create timestams
 );
