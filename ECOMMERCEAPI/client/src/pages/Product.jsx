@@ -155,6 +155,12 @@ const Rating = styled.div`
     margin-left: 10px;
 `;
 
+const StockButton = styled.div`
+    margin-left: 20px;
+`
+const StockAmount = styled.div`
+    margin-left: 20px;
+`
 
 const Product = () => {
 

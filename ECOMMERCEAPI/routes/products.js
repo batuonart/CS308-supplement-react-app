@@ -234,7 +234,7 @@ router.get("/findaroma/:categories", async (req, res) => {
     try {
         const products = await Product.find({categories: req.params.categories})
         const aromaArray=[]
-        for (product of products){
+        for (let product of products){
             for(const aromaB of product.aroma){
                 if ((aromaArray.includes(aromaB.charAt(0).toUpperCase()+aromaB.slice(1)) === false)) 
                 { aromaArray.push(aromaB.charAt(0).toUpperCase()+aromaB.slice(1))}
@@ -263,7 +263,7 @@ router.get("/findsize/:categories", async (req, res) => {
     try {
         const products = await Product.find({categories: req.params.categories})
         const sizeArray=[]
-        for (product of products){
+        for (let product of products){
             if ((sizeArray.includes(product.size) === false)) 
                 { sizeArray.push(product.size)}
         }
