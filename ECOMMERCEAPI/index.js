@@ -45,7 +45,7 @@ app.use("/api/orders", ordersRoute);
 app.use("/api/comments", commentRoute); 
 app.use("/api/adresses", adressRoute); 
 app.use("/api/checkout", stripeRoute); 
-app.use("/api/returnlists", returnlRoute); 
+app.use("/api/returnl", returnlRoute); 
 app.use(cors());
 
 

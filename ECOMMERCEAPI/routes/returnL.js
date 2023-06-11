@@ -44,17 +44,14 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
 // UPDATE RList
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     const rList = await RList.findOne({ userId: req.params.userId })
-    var List=rList.products
+    var List = rList.products
     var addPrd = {
         buyerId: req.body.buyerId,
         productId: req.body.productId,
-        quantity: req.body.quantity,
         productTitle: req.body.title,
-        productImg: req.body.img,
         returnAcpt: req.body.returnAcpt,
-        returnRsn: req.body.returnRsn,
+        quantity: req.body.quantity,
         productPrc: req.body.productPrc,
-        productDsc: req.body.productDsc,
     }
     List.push(addPrd)
     try {

@@ -16,6 +16,7 @@ const OrderList = (props) => {
               </SingleFieldList>
             </ArrayField>
             <DateField source='createdAt'/>
+            <TextField source='invoiceLink'/>
             <EditButton basePath='/users'/>
             <DeleteButton basePath='/users'/>
 

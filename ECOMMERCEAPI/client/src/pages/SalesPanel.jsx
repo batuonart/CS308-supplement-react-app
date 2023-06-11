@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Admin, Resource } from 'react-admin';
 import dataProvider from '../dataProvider';
-import ProductList from '../lists/product/ProductList'
+import ProductListSM from '../lists/product/ProductListSM'
+import ProductEditSM from '../lists/product/ProductEditSM';
 
 
 
@@ -11,7 +12,7 @@ import ProductList from '../lists/product/ProductList'
 
 const SalesPanel = () => (
     <Admin dataProvider={dataProvider}>
-        <Resource name="products" list={ProductList}/>
+        <Resource name="products" list={ProductListSM} edit={ProductEditSM}/>
 
     </Admin>
 );
