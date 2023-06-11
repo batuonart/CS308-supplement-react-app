@@ -1,5 +1,5 @@
 import React from 'react'
-import {List, Datagrid, TextField, DateField, EditButton, DeleteButton} from 'react-admin'
+import {List, Datagrid, TextField, DateField, EditButton, DeleteButton, ArrayField, SingleFieldList, ChipField} from 'react-admin'
 
 const OrderList = (props) => {
   return (
@@ -10,6 +10,11 @@ const OrderList = (props) => {
             <TextField source='status'/>
             <TextField source='address'/>
             <TextField source='amount'/>
+            <ArrayField source="products">
+              <SingleFieldList>
+                <ChipField source="productTitle"/>
+              </SingleFieldList>
+            </ArrayField>
             <DateField source='createdAt'/>
             <EditButton basePath='/users'/>
             <DeleteButton basePath='/users'/>
