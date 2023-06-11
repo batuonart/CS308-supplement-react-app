@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   products: [],
+  wishList: [],
 };
 
 // the input will be addProduct({product, quantity: 1})
@@ -51,6 +52,21 @@ const productSlice = createSlice({
     clearProduct: (state) => {
       state.products = [];
     },
+    addToWishlist: (state, action) => {
+      return {
+      ...state,
+      wishList: [ ...state.wishList, action.payload]
+      },
+      console.log( "REDUX: ", state.wishList);
+
+    },
+    removeFromWishlist: (state, action) => {
+      // state.wishList = state.wishList.filter( (item) => item._id !== action.payload );
+      return {
+        ...state,
+        wishList: state.wishList.filter((item) => item._id !== action.payload),
+      };
+    },
   },
 });
 
@@ -61,6 +77,8 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   clearProduct,
+  addToWishlist,
+  removeFromWishlist
 } = productSlice.actions;
 
 export default productSlice.reducer;

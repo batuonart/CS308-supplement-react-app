@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import { useState } from "react"
 import { useEffect } from "react"
 import { publicRequest } from "../requestMethod"
+import { useDispatch, useSelector } from 'react-redux'
+import { addToWishlist, removeFromWishlist } from '../redux/productRedux'
 
 
 const Info = styled.div`
@@ -71,13 +73,13 @@ const Icon = styled.div`
     &:hover {
         background-color: #e9f5f5;
         transform: scale(1.1);
+        
     }
 `
 const Title = styled.h1`
     color: white;
     font-weight: 800;
     text-align: center;
-    
     
 
 `
@@ -92,15 +94,33 @@ const Price = styled.span`
 
 const Product = ( { item } ) => {
 
-   
+    const dispatch = useDispatch();
+    
+    const [itemFavored, setItemFavored] = useState(false)
 
+    let user = useSelector(state => state.user.currentUser);
+    const wishlist = user.wishlist;
 
+    const isItemInWishlist = wishlist?.some((wishlistItem) => wishlistItem._id === item._id);
 
-  return (
+    console.log( user.wishlist );
+    const handleClick = ( item ) => {
+        
+        // //console.log( "isItemInWishlist: ", isItemInWishlist);
+        if (!isItemInWishlist) {
+            setItemFavored( !itemFavored );
+            dispatch( addToWishlist(item) );
+        } else {
+            setItemFavored(false);
+            dispatch( removeFromWishlist(item._id) );
+        }
+        console.log( 'ITEM CLICKED ON ', item )
+    }
+    return (
     <Container>
-      <Circle />
-      <Image src={ item.img } />
-      <Info>
+        <Circle />
+        <Image src={ item.img } />
+        <Info>
         <Title>{item.title}</Title>
         {/*<Price>${item.price}</Price>  ADD IF NEEDED*/}
         <Icon>
@@ -108,12 +128,18 @@ const Product = ( { item } ) => {
                 <SearchOutlined />
             </Link>
         </Icon>
-        {/* <Icon >
-            <FavoriteBorderOutlined />
-        </Icon> */}
-      </Info>
+        <Icon onClick={ () => handleClick( item )}>
+            <Link>
+            { itemFavored ? 
+                <FavoriteBorderOutlined/> :
+                <FavoriteBorderOutlined style={{color: 'red'}}/>
+            }
+                
+            </Link>
+        </Icon> 
+        </Info>
     </Container>
-  )
+    )
 }
 
 export default Product

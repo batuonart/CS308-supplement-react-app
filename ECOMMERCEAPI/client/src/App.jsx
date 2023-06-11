@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import Success from "./pages/Success";
 import Search from "./pages/Search";
+import Wishlist from "./pages/Wishlist";
 
 const App = () => {
 
@@ -33,7 +34,7 @@ const App = () => {
                 <Route path="/search" element={<Search />}></Route>
                 <Route path="/orders" element={<Orders />}></Route>
                 <Route path="/admin/*" element={<AdminPanel />}></Route>
-
+                <Route path="/wishlist" element={<Wishlist />}></Route> 
             </Routes>
         </Router>
     );
