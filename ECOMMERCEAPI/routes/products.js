@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
+const User = require("../models/User");
+const nodemailer = require('nodemailer');
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin, verifyTokenAndSalesManager } = require("./verifyToken");
-
 // Here, we'll be using express router.
 const router = require("express").Router();
 
@@ -46,18 +47,19 @@ router.get("/", async (req, res) => {
     const qCategory = req.query.category;
     try {
         let products;
-        if (qNew){
+        if (qNew) {
             // Fetch most recent 5 products
             // To use the API localhost:5000/api/products?new=true
             //  ⟶ new?true query allows you to fetch the recent products.
-            products = await Product.find().sort({createdAt: -1}).limit(1) //Change limit to 1 to change how many recent products to fetch.
+            products = await Product.find().sort({ createdAt: -1 }).limit(1) //Change limit to 1 to change how many recent products to fetch.
 
-        } else if (qCategory){
+        } else if (qCategory) {
             // Get products by category
-            products = await Product.find({categories: {
-                $in: [qCategory],
-            },
-        });
+            products = await Product.find({
+                categories: {
+                    $in: [qCategory],
+                },
+            });
         } else {
             // Get all products
             products = await Product.find();
@@ -72,7 +74,7 @@ router.get("/", async (req, res) => {
 //Using $regex to find name by substr. Ex: Finding Hardline by line or ard
 router.get("/findbytitle/:title", async (req, res) => {
     try {
-        const product = await Product.find( {title: { $regex: req.params.title}})
+        const product = await Product.find({ title: { $regex: req.params.title } })
         // Send everything but password. 
         // Send user the access token
         return res.status(200).json(product);
@@ -84,7 +86,7 @@ router.get("/findbytitle/:title", async (req, res) => {
 //Using $regex to find name by substr. Ex: Finding Banana Protein Powder by Banana, protein ...
 router.get("/findbydesc/:desc", async (req, res) => {
     try {
-        const product = await Product.find( {desc: { $regex: req.params.desc}})
+        const product = await Product.find({ desc: { $regex: req.params.desc } })
         // Send everything but password. 
         // Send user the access token
         return res.status(200).json(product);
@@ -98,12 +100,12 @@ router.get("/findbydesc/:desc", async (req, res) => {
 router.get("/findbyall/:all", async (req, res) => {
 
     try {
-        const product = await Product.find({$or:[ {desc: { $regex: req.params.all, $options: 'i'}}, {title: { $regex: req.params.all, $options: 'i'}}]})
+        const product = await Product.find({ $or: [{ desc: { $regex: req.params.all, $options: 'i' } }, { title: { $regex: req.params.all, $options: 'i' } }] })
 
         return res.status(200).json(product);
     } catch (err) {
         return res.status(500).json(err);
-    }
+    }
 })
 
 
@@ -145,10 +147,47 @@ router.put("/set-discount/:id", verifyTokenAndSalesManager, async (req, res) => 
             { new: true }
         );
 
+        // Fetch all users
+        const users = await User.find();
+        users.forEach(async user => {
+            console.log("checking for user", user.username, user.wishlist, user)
+            
+            // Check if wishlist contains product
+            const hasProductInWishlist = user.wishlist.some(wishlistItem => wishlistItem._id.toString() === req.params.id);
+            
+            if (hasProductInWishlist) {
+              let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'developer.egemen',
+                  pass: 'mksljwidjpugnfjr'
+                }
+              });
+          
+              let mailOptions = {
+                from: 'developer.egemen@gmail.com',
+                to: user.email,
+                subject: 'A product on your wishlist is on sale!',
+                text: `Hello ${user.username}, the product ${product.title} is now on sale. Check it out!`
+              };
+          
+              console.log("Before transporter")
+              try {
+                let info = await transporter.sendMail(mailOptions);
+                console.log('Email sent: ' + info.response);
+              } catch (err) {
+                console.log(err)
+              }
+              console.log("After transporter")
+            }
+          });
+          
+
         return res.status(200).json(updatedProduct);
     } catch (err) {
         return res.status(500).json(err);
     }
 });
+
 
 module.exports = router;
