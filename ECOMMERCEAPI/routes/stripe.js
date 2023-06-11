@@ -23,11 +23,13 @@ router.post("/payment", verifyToken, (req, res) => {
                 // console.log(stripeErr);
                 return res.status(500).json(stripeErr);
             } else {
+                console.log("stripeRes.id order creation", stripeRes.id)
                 const newOrder = new Order({
                     userId: req.body.userId, // assuming this is the user id
                     products: req.body.products.products, // products should be included in the request body
                     amount: req.body.amount,
                     address: req.body.address,
+                    orderChargeId: stripeRes.id,
                     // add any other fields you need
                 });
                 try {
@@ -196,12 +198,15 @@ router.post("/payment", verifyToken, (req, res) => {
                         });
                     }
                     const sentInvoice = await stripe.invoices.sendInvoice(finalizedInvoice.id);
-                    console.log("sentInvoice:", sentInvoice)
+                    // console.log("sentInvoice:", sentInvoice)
                     sendInvoiceEmail(sentInvoice.invoice_pdf, currUser.email);
                     try {
+                        console.log("stripeRes.id", stripeRes.id)
                         await Order.findByIdAndUpdate(savedOrder._id, {
-                            invoiceLink: sentInvoice.invoice_pdf
-                        });
+                            invoiceLink: sentInvoice.invoice_pdf,
+                            orderChargeId: stripeRes.id,
+                        }, );
+                        console.log("Updated order")
                     } catch (err) {
                         console.error(err);
                         return res.status(500).json({ error: 'There was a problem updating the order with the invoice link' });

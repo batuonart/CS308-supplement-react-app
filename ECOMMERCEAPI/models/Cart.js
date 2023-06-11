@@ -13,7 +13,7 @@ const CartSchema = new mongoose.Schema(
                 default: 1, //Default number of items to add to cart.
             }
         }
-    ]
+    ],
 
 },
     { timestamps: true } //Auto create timestams
