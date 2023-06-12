@@ -159,7 +159,7 @@ router.get("/finddiscount/:id", async (req, res) => {
         const id=req.params.id
         const users=await User.find()
         const wishlistUsers=[]
-        for (user of users){
+        for (let user of users){
             for(const prod of user.wishlist){
                 if(prod._id==id && wishlistUsers.includes(user._id) === false ){
                     wishlistUsers.push(user._id)
