@@ -6,7 +6,7 @@ const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = requir
 // Here, we'll be using express router.
 
 // CREATE RList
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
     const newRList = new RList(req.body);
 
     try {
@@ -19,7 +19,7 @@ router.post("/", verifyToken, async (req, res) => {
 });
 
 // DELETE RList
-router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         await RList.findByIdAndDelete(req.params.id)
         return res.status(200).json("RList has been deleted successfully");
@@ -41,8 +41,22 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 })
 
+// UPDATE Rlist
+router.put("/:id", async (req, res) => {
+    try {
+        const updatedRlist = await RList.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedRlist);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
 // UPDATE RList
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/addprd/:id", verifyTokenAndAuthorization, async (req, res) => {
     const rList = await RList.findOne({ userId: req.params.userId })
     var List = rList.products
     var addPrd = {
@@ -68,15 +82,30 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
 })
 
 // GET ALL, View all RLists of all users.
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         // Return ALL RLists
         const rLists = await RList.find();
+        res.header('Content-Range', 'rLists 0-24/319');
         return res.status(200).json(rLists);
     } catch (err) {
         return res.status(500).json(err);
     }
 })
+
+//GET FOR ADMIN PANEL
+router.get("/:id", async (req, res) => {
+    try {
+        const rLists = await RList.findById(req.params.id)
+        // Send everything but password. 
+        // Send user the access token
+        res.header('Content-Range', 'rLists 0-24/319');
+        return res.status(200).json(rLists);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
 
 
 module.exports = router

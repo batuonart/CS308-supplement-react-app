@@ -137,8 +137,9 @@ const Orders = () => {
     }
 };
 
-const handleRefundRequest = async (purchaseDate) => {
+const handleRefundRequest = async (order, product) => {
   const currentDate = new Date();
+  const purchaseDate = order.createdAt;
   const purchaseDateTime = new Date(purchaseDate);
   console.log("click");
   // Check if one month has passed
@@ -147,13 +148,18 @@ const handleRefundRequest = async (purchaseDate) => {
     (currentDate.getFullYear() === purchaseDateTime.getFullYear() &&
       currentDate.getMonth() > purchaseDateTime.getMonth() + 1)
   ) {
-    console.log("sorry");
     toast.error('Sorry, unable to refund products purchased 30+ days ago.', {
       
     });
     return;
   }
-  console.log("lol");
+  let refundProduct = {
+    productId: product._id,
+    quantity: product.quantity,
+    productPrc: order.amount,
+    buyerId: order.id,
+}
+await publicRequest.post("/returnl/", refundProduct)
 
   toast.success('Refund request submitted', {
     toastStyle: { background: 'green' },
@@ -193,7 +199,7 @@ const handleRefundRequest = async (purchaseDate) => {
                       </Link>
                       <ProductText>{product.productTitle}</ProductText>
                       <ProductText style={{ fontWeight: 300, marginLeft: "10px" }}>x {product.quantity}</ProductText>
-                      <Button onClick={() => handleRefundRequest(order.createdAt)}>Request Refund</Button>
+                      <Button onClick={() => handleRefundRequest(order, product)}>Request Refund</Button>
                     </ProductContainerSingle>
                   </div>
                 })

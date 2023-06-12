@@ -9,8 +9,8 @@ const ProductListSM = (props) => {
             <TextField source='stockCount'/>
             <TextField source='discountRate'/>
             <DateField source='createdAt'/>
-            <EditButton basePath='/users'/>
-            <DeleteButton basePath='/users'/>
+            <EditButton basePath='/products'/>
+            <DeleteButton basePath='/products'/>
 
 
         </Datagrid>

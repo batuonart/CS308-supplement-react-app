@@ -141,7 +141,7 @@ router.put("/:id", async (req, res) => {
 })
 
 // SET DISCOUNT RATE
-router.put("/set-discount/:id", verifyTokenAndSalesManager, async (req, res) => {
+router.put("/set-discount/:id", async (req, res) => {
     try {
         const discountRate = req.body.discountRate;
         if (discountRate < 0 || discountRate > 1) {
