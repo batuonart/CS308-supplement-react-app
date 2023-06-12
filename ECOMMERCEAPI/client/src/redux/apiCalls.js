@@ -1,6 +1,6 @@
 import { loginFailure, loginStart, loginSuccess, logoutSuccess, registerStart, registerSuccess, registerFailure } from "./userRedux";
 import { publicRequest } from "../requestMethod";
-
+import axios from 'axios';
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
@@ -33,3 +33,16 @@ export const logout = async(dispatch) => {
     console.log("Error while logging out!!!");
   }
 }
+
+
+export const addToWishlistApi = async (userId, itemId) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:5000/api/users/addwishlist/${itemId}`
+    );
+    console.log('RESPONSE: ', response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

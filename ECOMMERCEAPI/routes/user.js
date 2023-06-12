@@ -112,7 +112,7 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
 })
 
 //Adding to the wishlist
-router.put("/addwishlist/:id", verifyToken, async (req, res) => {
+router.put("/addwishlist/:id", async (req, res) => {
     const user=await User.findOne({ _id: req.body.userId })
     const wishlist=user.wishlist
     const product = await Product.findOne({ _id: req.params.id })
@@ -131,7 +131,7 @@ router.put("/addwishlist/:id", verifyToken, async (req, res) => {
 })
 
 //Removing from the wishlist
-router.put("/remwishlist/:id", verifyToken, async (req, res) => {
+router.put("/remwishlist/:id", async (req, res) => {
     const user=await User.findOne({ _id: req.body.userId })
     const prodId=req.params.id
     const wishlist=[]
@@ -148,6 +148,17 @@ router.put("/remwishlist/:id", verifyToken, async (req, res) => {
             { new: true }
         );
         return res.status(200).json(updatedUser);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+// GET wishlist
+router.get("/getwishlist/:id", async (req, res) => {
+    const user = await User.findById(req.params.id)
+    wishlist=user.wishlist
+    try {
+        return res.status(200).json(wishlist);
     } catch (err) {
         return res.status(500).json(err);
     }
