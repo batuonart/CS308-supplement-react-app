@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import Announcement from '../components/Announcement';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromWishlist } from '../redux/productRedux';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   max-width: 800px;
@@ -63,48 +65,81 @@ const Button = styled.button`
   padding: 10px;
   font-size: 16px;
   background-color: transparent;
-  border: 2px solid ${ props => ( props.remove ? 'red' : 'teal')};
+  border: 2px solid ${props => (props.remove ? 'red' : 'teal')};
   color: black;
   cursor: pointer;
 
   &:hover {
-
-    background-color: ${ props => ( props.remove ? 'red' : 'teal')};
+    background-color: ${props => (props.remove ? 'red' : 'teal')};
     color: white;
   }
 `;
- 
 
-const Wishlist = () => {
+let Wishlist = () => {
+  let dispatch = useDispatch();
+  
+  let user = useSelector(state => state.user.currentUser);
+  let [wishlist, setWishlist] = useState(null); // We'll populate this state with fetched data
+  
+  // Fetch the user and update local state
+  useEffect(() => {
+    if (user) {
+      axios.get(`http://localhost:5000/api/users/find/${user._id}`)
+        .then(response => {
+          setWishlist(response.data.wishlist);
+        })
+        .catch(error => {
+          console.error('There was an error fetching the user!', error);
+        });
+    }
+  }, [user]);
 
-  const user = useSelector( state => state.user.currentUser );
-  const userWishlist = user.wishlist;
-  const dispatch = useDispatch();
-
-  console.log(user);
-  console.log(userWishlist);
+  let handleRemoveFromWishlist = itemId => {
+    dispatch(removeFromWishlist(itemId));
+  };
+  // If wishlist is null, display loading message
+  if (wishlist === null) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <><Navbar /><Announcement /><Container>
-      <Title>My Wishlist</Title>
-      {userWishlist.map(item => (
-        <WishlistItem key={item._id}>
-          <ItemImage src={item.img} alt={item.name} />
-          <ItemInfo>
-            <ItemName><strong>Title:</strong> {item.title}</ItemName>
-            <ItemDescription><strong>Description:</strong> {item.desc}</ItemDescription>
-            <ItemPrice><strong>Price:</strong> {item.price}$</ItemPrice>
-            <ButtonContainer>
-                <Button >Add to Cart</Button>
-                <Button remove onClick={() => dispatch( removeFromWishlist(item))} >
-                  Remove from Wishlist
+    <>
+      <Navbar />
+      <Announcement />
+      <Container>
+        <Title>My Wishlist</Title>
+        {wishlist.map(item => (
+          <WishlistItem key={item._id}>
+            <ItemImage src={item.img} alt={item.name} />
+            <ItemInfo>
+              <ItemName>
+                <strong>Title:</strong> {item.title}
+              </ItemName>
+              <ItemDescription>
+                <strong>Description:</strong> {item.desc}
+              </ItemDescription>
+              <ItemPrice>
+                <strong>Price:</strong> {item.price}$
+              </ItemPrice>
+              <ButtonContainer>
+                <Button>
+                  <Link to={`/product/${item._id}`} style={{textDecoration: 'none', color: 'black'}}>
+                    Go To Item
+                  </Link>
                 </Button>
+                {/* <Button
+                  remove
+                  onClick={() => dispatch(removeFromWishlist(item._id))}
+                >
+                  Remove from Wishlist
+                </Button> */}
               </ButtonContainer>
-          </ItemInfo>
-        </WishlistItem>
-      ))}
-    </Container></>
+            </ItemInfo>
+          </WishlistItem>
+        ))}
+      </Container>
+    </>
   );
 };
 
-export default Wishlist;
+export default Wishlist

@@ -268,7 +268,7 @@ const Cart = () => {
 
     }, [address, id, token, cart, stripeToken, sum, navigate]);
 
-    const userWishList = user.wishlist;
+    let userWishList = user.wishlist;
     console.log( 'USER WISHLIST: ', user.wishlist )
     return (
         <Container>

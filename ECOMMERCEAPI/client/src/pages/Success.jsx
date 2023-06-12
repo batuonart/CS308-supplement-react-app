@@ -68,6 +68,36 @@ const Success = () => {
   const [orderId, setOrderId] = useState(null);
 
   useEffect(() => {
+    const decrementStockCount = async () => {
+      try {
+        
+
+        for (let i = 0; i < newProducts.length; i++) {
+          const productId = newProducts[i]._id;
+          const quantity = newProducts[i].quantity;
+    
+          const product = await userRequest.get(`/products/${productId}`);
+          console.log(productId);
+          console.log(product.data.stockCount);
+          console.log(quantity);
+          const updatedStockCount = product.data.stockCount - quantity;
+    
+          await userRequest.put(`/products/${productId}`, {
+            stockCount: updatedStockCount
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+
+    decrementStockCount();
+  }, [location.state.cart]);
+
+
+
+  useEffect(() => {
     const createOrder = async () => {
       try {
         console.log(newProducts);

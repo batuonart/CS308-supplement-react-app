@@ -107,7 +107,7 @@ const Navbar = () => {
         logout(dispatch);  
         localStorage.removeItem("persist:root");  
     };
-    const quantity = useSelector( state => state.cart.products.length );
+    const quantity = useSelector( state => state.cart?.products.length );
     //console.log("Navbar: ", quantity)
     return (
         <Container>
@@ -141,11 +141,22 @@ const Navbar = () => {
                             </Link>
                         </MenuItem>
                         
-                            { user.isAdmin ?
+                            { user.isProductManager ?
                             <>
                             <MenuItem>
                                 <ProfilePicture>
-                                    <Link to="/admin">
+                                    <Link to="/productmanager">
+                                    <Settings style={{color: "black", fontSize: 30}}/>
+                                    </Link>
+                                </ProfilePicture>
+                                </MenuItem>
+                            </>
+                            :<></> }
+                            { user.isSalesManager ?
+                            <>
+                            <MenuItem>
+                                <ProfilePicture>
+                                    <Link to="/salesmanager">
                                     <Settings style={{color: "black", fontSize: 30}}/>
                                     </Link>
                                 </ProfilePicture>

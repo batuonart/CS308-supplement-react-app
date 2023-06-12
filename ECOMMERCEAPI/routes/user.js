@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Product = require("../models/Product");
 var CryptoJS = require('crypto-js');
 
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
@@ -108,6 +109,78 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
     } catch (err) {
     return res(500).json("Error fetching stats");
 }
+})
+
+//Adding to the wishlist
+router.put("/addwishlist/:id", async (req, res) => {
+    const user=await User.findOne({ _id: req.body.userId })
+    const wishlist=user.wishlist
+    const product = await Product.findOne({ _id: req.params.id })
+    wishlist.push(product)
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.body.userId, {
+            wishlist: wishlist
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedUser);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+//Removing from the wishlist
+router.put("/remwishlist/:id", async (req, res) => {
+    const user=await User.findOne({ _id: req.body.userId })
+    const prodId=req.params.id
+    const wishlist=[]
+    for(const products of user.wishlist){
+        if( prodId != products._id){
+            wishlist.push(products)
+        }
+    }
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.body.userId, {
+            wishlist: wishlist
+        },
+            { new: true }
+        );
+        return res.status(200).json(updatedUser);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+// GET wishlist
+router.get("/getwishlist/:id", async (req, res) => {
+    const user = await User.findById(req.params.id)
+    wishlist=user.wishlist
+    try {
+        return res.status(200).json(wishlist);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
+})
+
+//It is for finding aromas of an category
+router.get("/finddiscount/:id", async (req, res) => {
+    try {
+        const id=req.params.id
+        const users=await User.find()
+        const wishlistUsers=[]
+        for (user of users){
+            for(const prod of user.wishlist){
+                if(prod._id==id && wishlistUsers.includes(user._id) === false ){
+                    wishlistUsers.push(user._id)
+                }
+            }
+        }
+        return res.status(200).json(wishlistUsers);
+    } catch (err) {
+        return res.status(500).json(err);
+    }
 })
 
 module.exports = router;

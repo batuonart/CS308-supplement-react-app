@@ -53,19 +53,28 @@ const productSlice = createSlice({
       state.products = [];
     },
     addToWishlist: (state, action) => {
-      return {
-      ...state,
-      wishList: [ ...state.wishList, action.payload]
-      },
-      console.log( "REDUX: ", state.wishList);
-
+      if ( action.payload != undefined )
+      {
+        state.wishList.push( action.payload );
+      }
+      else {
+        console.log( "xdtcfyvgubhınjokmpölğ");
+      }
+      //console.log( "REDUX: ", state);
+      // return {
+      //   ...state,
+      //   wishList: [...state.wishList, action.payload],
+      // }
+      //state.wishList.push( action.payload )
     },
     removeFromWishlist: (state, action) => {
-      // state.wishList = state.wishList.filter( (item) => item._id !== action.payload );
-      return {
-        ...state,
-        wishList: state.wishList.filter((item) => item._id !== action.payload),
-      };
+      //console.log( "AAAa: ", wishList);
+      console.log( "BBBb: ", state.wishList);
+      state.wishList = state.wishList.filter( (item) => item._id !== action.payload );
+      // return {
+      //   ...state,
+      //   wishList: state?.wishList.filter((item) => item._id !== action.payload),
+      // };
     },
   },
 });
