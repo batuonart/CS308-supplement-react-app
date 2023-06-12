@@ -236,8 +236,6 @@ const Cart = () => {
         address = user.address;
         id = user._id;
     } 
-    // console.log("Token is:", token);
-    // console.log("Cart is:", cart);
 
     useEffect(() => {
         const makeRequest = async () => {
@@ -270,7 +268,8 @@ const Cart = () => {
 
     }, [address, id, token, cart, stripeToken, sum, navigate]);
 
-    console.log( cart.products )
+    let userWishList = user.wishlist;
+    console.log( 'USER WISHLIST: ', user.wishlist )
     return (
         <Container>
             <Navbar />
@@ -293,6 +292,13 @@ const Cart = () => {
 
                     <TopTexts>
                         <TopText>Shopping Bag({cart.products.length})</TopText>
+                    </TopTexts>
+                    <TopTexts>
+                        <TopText>
+                            <Link to={'/wishlist'}>
+                                Wish List({userWishList.length})
+                            </Link>
+                        </TopText>
                     </TopTexts>
                     {user && <TopButton type='filled'>CHECKOUT NOW</TopButton>} 
                     

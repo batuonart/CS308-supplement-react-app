@@ -5,7 +5,9 @@ import styled from 'styled-components'
 
 import { useState } from "react"
 import { useEffect } from "react"
-import { publicRequest } from "../requestMethod"
+import { publicRequest, userRequest } from "../requestMethod"
+import { useDispatch, useSelector } from 'react-redux'
+import { addToWishlist, removeFromWishlist } from '../redux/productRedux'
 
 
 const Info = styled.div`
@@ -71,6 +73,7 @@ const Icon = styled.div`
     &:hover {
         background-color: #e9f5f5;
         transform: scale(1.1);
+        
     }
 `
 const Title = styled.h1`
@@ -78,11 +81,8 @@ const Title = styled.h1`
     font-weight: 800;
     text-align: center;
     
-    
 
 `
-
-
 
 const Price = styled.span`
     color: white;
@@ -92,15 +92,76 @@ const Price = styled.span`
 
 const Product = ( { item } ) => {
 
-   
+    const dispatch = useDispatch();
+    
+    const [itemFavored, setItemFavored] = useState(false)
 
+    let user = useSelector(state => state.user.currentUser);
 
+    //const wishlist = user?.wishlist;
 
-  return (
+    //console.log( user ); // user.accessToken
+    // let handleClick;
+    // if (user) {
+    //     const wishlist = user.wishlist;
+    //     console.log( user.wishlist );    
+    //     handleClick = ( item ) => {
+    //         const isItemInWishlist = wishlist?.some((wishlistItem) => wishlistItem._id === item._id);
+    //         if (!isItemInWishlist) {
+    //             setItemFavored( !itemFavored );
+    //             wishlist.push( item );
+    //         } 
+    //         console.log( 'ITEM CLICKED ON ', item )
+    //     }
+    // }
+    
+  
+
+    useEffect(() => {
+        const updatedWishlist = async () => {
+          try {
+            if (user) {
+              const isItemInWishlist = user?.wishlist.some(wishlistItem => wishlistItem._id === item._id);
+              console.log('1');
+              if (!isItemInWishlist && itemFavored) {
+                console.log('2');
+                const requestBody = {
+                  userId: user._id
+                };
+
+                // const headers = {
+                //   header: {
+                //     Authorization: `Bearer ${user.accessToken}`, // Include the header token
+                //   },
+                // };
+                console.log('3');
+                const res = await userRequest.put(`users/addwishlist/${item._id}`, requestBody);
+                
+                console.log('RES DATA: ', res.data.wishlist);
+
+                dispatch(addToWishlist(res.data.wishlist));
+                console.log('4');
+              }
+            }
+      
+          } catch (e) {
+            console.log('Error occurred: ', e)
+          }
+        };
+        updatedWishlist();
+      }, [itemFavored, item._id, user, dispatch]);
+      
+
+    const handleFavoriteClick = () => {
+        console.log( 'USERRRRR: ', user );
+        return setItemFavored(!itemFavored);
+      };
+
+    return (
     <Container>
-      <Circle />
-      <Image src={ item.img } />
-      <Info>
+        <Circle />
+        <Image src={ item.img } />
+        <Info>
         <Title>{item.title}</Title>
         {/*<Price>${item.price}</Price>  ADD IF NEEDED*/}
         <Icon>
@@ -108,12 +169,18 @@ const Product = ( { item } ) => {
                 <SearchOutlined />
             </Link>
         </Icon>
-        {/* <Icon >
-            <FavoriteBorderOutlined />
-        </Icon> */}
-      </Info>
+        <Icon onClick={ handleFavoriteClick }>
+            <Link>
+            { itemFavored ? 
+                <FavoriteBorderOutlined/> :
+                <FavoriteBorderOutlined style={{color: 'red'}}/>
+            }
+                
+            </Link>
+        </Icon> 
+        </Info>
     </Container>
-  )
+    )
 }
 
 export default Product

@@ -169,7 +169,7 @@ const Login = () => {
                 <Form>
                     <Input placeholder="username" onChange={ (e) => handleUsername(e) }/>
                     <Input placeholder="password" type="password" onChange={ (e) => handlePassw(e) }/>
-                    <Button onClick={ handleClick } disabled={ isFetching }>LOGIN</Button>
+                    <Button onClick={ handleClick } >LOGIN</Button>
                     {error && <Error>Something went wrong...</Error>}
                     <Link to="/register" style={{color: "black"}}>
                         Register.
@@ -179,5 +179,6 @@ const Login = () => {
         </Container>
     )
 }
+// disabled={ isFetching }
 
 export default Login

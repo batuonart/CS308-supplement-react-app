@@ -17,6 +17,7 @@ import Success from "./pages/Success";
 import Search from "./pages/Search";
 import ProductPanel from "./pages/ProductPanel";
 import SalesPanel from "./pages/SalesPanel";
+import Wishlist from "./pages/Wishlist";
 
 const App = () => {
 
@@ -35,7 +36,7 @@ const App = () => {
                 <Route path="/orders" element={<Orders />}></Route>
                 <Route path="/productmanager" element={<ProductPanel />}></Route>
                 <Route path="/salesmanager" element={<SalesPanel />}></Route>
-
+                <Route path="/wishlist" element={<Wishlist />}></Route> 
 
             </Routes>
         </Router>

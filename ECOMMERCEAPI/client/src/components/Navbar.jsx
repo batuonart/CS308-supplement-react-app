@@ -107,7 +107,7 @@ const Navbar = () => {
         logout(dispatch);  
         localStorage.removeItem("persist:root");  
     };
-    const quantity = useSelector( state => state.cart.products.length );
+    const quantity = useSelector( state => state.cart?.products.length );
     //console.log("Navbar: ", quantity)
     return (
         <Container>
