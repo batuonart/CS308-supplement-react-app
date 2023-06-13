@@ -8,31 +8,8 @@ const Product = require("../models/Product");
 // Here, we'll be using express router.
 
 // CREATE CART
-router.post("/", verifyToken, async (req, res) => {
-
-    var newProducts=[]
-
-    for(const product of req.body.products){
-        const updatedProduct = await Product.findOne({_id: product._id});
-        
-        var jsonNew ={
-            _id: product._id,
-            quantity: product.quantity,
-            productTitle: updatedProduct.title,
-            productImg: updatedProduct.img
-        }
-        
-        newProducts.push(jsonNew)
-    }
-    
-    const newOrder = new Order({
-        userId: req.body.userId,
-        products: newProducts,
-        amount: req.body.amount,
-        address: req.body.address,
-        status: req.body.status,
-    });
-
+router.post("/", async (req, res) => {
+    const newOrder = new Order(req.body);
     try {
         const savedOrder = await newOrder.save();
         return res.status(200).json(savedOrder);

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Edit, SimpleForm, TextInput, DateInput,FormDataConsumer} from 'react-admin'
+import {Edit, SimpleForm, TextInput, DateInput} from 'react-admin'
 
 const ProductEditSM = (props) => {
   const handleIdAndDiscount = async (id, discountRate) => {
@@ -27,26 +27,21 @@ const ProductEditSM = (props) => {
     }
   };
 
+  const handleSubmit = (formData) => {
+    if (formData._id && formData.discountRate) {
+      handleIdAndDiscount(formData._id, formData.discountRate);
+    }
+  };
 
   return (
-
     <Edit title= 'Edit Product' {...props}>
-        <SimpleForm>
+        <SimpleForm onSubmit={handleSubmit}>
             <TextInput disabled source='_id'/>
             <TextInput source='title'/>
             <TextInput source='discountRate'/>
             <TextInput source='price'/>
             <TextInput source='stockCount'/>
             <DateInput label='Created' source='createdAt'/>
-            <FormDataConsumer>
-                {({ formData, ...rest }) => {
-                    // calling your function when id and discountRate change
-                    if (formData._id && formData.discountRate) {
-                      handleIdAndDiscount(formData._id, formData.discountRate);
-                    }
-                    return null; // render nothing here, or you can add additional fields depending on your requirements
-                }}
-            </FormDataConsumer>
         </SimpleForm>
     </Edit>
   )

@@ -157,9 +157,9 @@ const handleRefundRequest = async (order, product) => {
     productId: product._id,
     quantity: product.quantity,
     productPrc: order.amount,
-    buyerId: order.id,
+    buyerId: user._id,
 }
-await publicRequest.post("/returnl/", refundProduct)
+await publicRequest.post("/returnls/", refundProduct)
 
   toast.success('Refund request submitted', {
     toastStyle: { background: 'green' },

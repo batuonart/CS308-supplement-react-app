@@ -11,8 +11,8 @@ const CommentList = (props) => {
             <TextField source='rating'/>
             <BooleanField source='isPassed'/>
             <DateField source='createdAt'/>
-            <EditButton basePath='/users'/>
-            <DeleteButton basePath='/users'/>
+            <EditButton basePath='/comments'/>
+            <DeleteButton basePath='/comments'/>
         </Datagrid>
     </List>
   )
