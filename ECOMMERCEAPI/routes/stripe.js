@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const stripe = require("stripe")("sk_test_51N48DWDAwaH6hFG0zt1x5vOfpY0ZLrpA0MbYtWvP733TjmslqfOgYL5IHRynxea2HGk8D7fTZ8lljUDHNlsRr97c00ChWwPU2L");
+const stripe = require("stripe")("sk-test-key-here");
 const Order = require("../models/Order"); // import your Order model
 const axios = require('axios');
 const nodemailer = require('nodemailer');
@@ -16,7 +16,7 @@ router.post("/payment", verifyToken, (req, res) => {
             currency: "usd",
         },
         {
-            apiKey: "sk_test_51N48DWDAwaH6hFG0zt1x5vOfpY0ZLrpA0MbYtWvP733TjmslqfOgYL5IHRynxea2HGk8D7fTZ8lljUDHNlsRr97c00ChWwPU2L"
+            apiKey: "api_key"
         },
         async (stripeErr, stripeRes) => {
             if (stripeErr) {
@@ -168,8 +168,8 @@ router.post("/payment", verifyToken, (req, res) => {
                         let transporter = nodemailer.createTransport({
                             service: 'gmail',
                             auth: {
-                                user: 'developer.egemen',
-                                pass: "mksljwidjpugnfjr"
+                                user: 'user-here',
+                                pass: "app-pwd"
                             }
                         });
                         if (currUser) {
@@ -177,7 +177,7 @@ router.post("/payment", verifyToken, (req, res) => {
                         }
     
                         let mailOptions = {
-                            from: 'developer.egemen@gmail.com',
+                            from: 'from-mail',
                             to: currUser.data.email,
                             subject: 'SUPPS Purchase - Your Invoice',
                             text: `Hello ${currUser.data.username}, you can find your invoice attached.`,
